@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="zxx">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="Game Store">
+    <meta name="keywords" content="Game Store, unica, creative, html">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Game Store</title>
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Mulish:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+
+    <!-- Css Styles -->
+    <link rel="stylesheet" href="../static/css/bootstrap.min.css" type="text/css">
+    <link rel="stylesheet" href="../static/css/font-awesome.min.css" type="text/css">
+    <link rel="stylesheet" href="../static/css/elegant-icons.css" type="text/css">
+    <link rel="stylesheet" href="../static/css/plyr.css" type="text/css">
+    <link rel="stylesheet" href="../static/css/nice-select.css" type="text/css">
+    <link rel="stylesheet" href="../static/css/owl.carousel.min.css" type="text/css">
+    <link rel="stylesheet" href="../static/css/slicknav.min.css" type="text/css">
+    <link rel="stylesheet" href="../static/css/style.css" type="text/css">
+</head>
+
+<body>
+    <!-- Page Preloder -->
+    <div id="preloder">
+        <div class="loader"></div>
+    </div>
+
+    <!-- Header Section Begin -->
+    <header class="header">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-2">
+                    <div class="header__logo">
+                        <a href="{{ url_for('home') }}">
+                            <h4>
+                                <span style="color: white;">Game</span><span style="color: #e53637;">zawy</span>
+                            </h4>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-8">
+                    <div class="header__nav">
+                        <nav class="header__menu mobile-menu">
+                            <ul>
+                                <li class="active"><a href="{{ url_for('home') }}">Homepage</a></li>
+                                <li><a href="./categories.html">Library</a>
+                                    <ul class="dropdown">
+                                        <li><a href="{{ url_for('categories') }}">Categories</a></li>
+                                    </ul>
+                                </li>
+                                {% if user: %}
+                                <li><a href="{{ url_for('logout') }}">Logout</a></li>
+                                {% else: %}
+                                <li><a href="{{ url_for('login') }}">Login</a></li>
+                                {% endif %}
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+                <div class="col-lg-2">
+                    <div class="header__right">
+                        <a href="#" class="search-switch"><span class="icon_search"></span></a>
+                        <a href="./login.html"><span class="icon_profile"></span></a>
+                    </div>
+                </div>
+            </div>
+            <div id="mobile-menu-wrap"></div>
+        </div>
+    </header>
+    <!-- Header End -->
+
+    <!-- Hero Section Begin -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero__slider owl-carousel">
+                {%for game in games[:3]:%}
+                <div class="hero__items set-bg"
+                    data-setbg="{{ url_for('static',filename='img/game/' + game['img_path']) }}">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="hero__text">
+                                <div class="label">{{ game['genres'].split(',',1)[0] }}</div>
+                                <h2>{{ game['name'] }}</h2>
+                                <p>{{ game['description'] }}</p>
+                                <a href="{{ url_for('game_page', id=game['id']) }}"><span>Buy Now</span> <i
+                                        class="fa fa-angle-right"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {%endfor%}
+            </div>
+        </div>
+    </section>
+    <!-- Hero Section End -->
+
+    <!-- Product Section Begin -->
+    <section class="product spad">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="popular__product">
+                        <div class="row">
+                            <div class="col-lg-8 col-md-8 col-sm-8">
+                                <div class="section-title">
+                                    <h4>Popular Games</h4>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-md-4 col-sm-4">
+                                <div class="btn__all">
+                                    <a href="#" class="primary-btn">View All <span class="arrow_right"></span></a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            {%for game in games:%}
+                            <div class="col-lg-4 col-md-6 col-sm-6">
+                                <div class="product__item">
+                                    <div class="product__item__pic set-bg"
+                                        data-setbg="{{ url_for('static',filename='img/game/' + game['img_path']) }}">
+                                    </div>
+                                    <div class="product__item__text">
+                                        <ul>
+                                            <li>{{ game['genres'].split(',',1)[0] }}</li>
+                                            <li>{{ game['genres'].split(',',1)[1] }}</li>
+                                        </ul>
+                                        <h5><a href="{{ url_for('game_page', id=game['id']) }}">{{ game['name'] }}</a>
+                                        </h5>
+                                    </div>
+                                </div>
+                            </div>
+                            {%endfor%}
+                        </div>
+                    </div>
+                    <div class="recent__product">
+                        <div class="row">
+                            <div class="col-lg-8 col-md-8 col-sm-8">
+                                <div class="section-title">
+                                    <h4>Recently Added Shows</h4>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-md-4 col-sm-4">
+                                <div class="btn__all">
+                                    <a href="#" class="primary-btn">View All <span class="arrow_right"></span></a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            {%for game in games:%}
+                            <div class="col-lg-4 col-md-6 col-sm-6">
+                                <div class="product__item">
+                                    <div class="product__item__pic set-bg"
+                                        data-setbg="{{ url_for('static',filename='img/game/' + game['img_path']) }}">
+                                    </div>
+                                    <div class="product__item__text">
+                                        <ul>
+                                            <li>{{ game['genres'].split(',',1)[0] }}</li>
+                                            <li>{{ game['genres'].split(',',1)[1] }}</li>
+                                        </ul>
+                                        <h5><a href="{{ url_for('game_page', id=game['id']) }}">{{ game['name'] }}</a>
+                                        </h5>
+                                    </div>
+                                </div>
+                            </div>
+                            {%endfor%}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6 col-sm-8">
+                    <div class="product__sidebar">
+                        <div class="product__sidebar__view">
+                            <div class="section-title">
+                                <h5>Top Views</h5>
+                            </div>
+                            <div class="filter__gallery">
+                                {%for game in games:%}
+                                <div class="product__sidebar__view__item set-bg mix day years"
+                                    data-setbg="{{ url_for('static',filename='img/game/' + game['img_path']) }}">
+                                    <h5><a href="{{ url_for('game_page', id=game['id']) }}">{{ game['name'] }}</a></h5>
+                                </div>
+                                {%endfor%}
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Product Section End -->
+
+    <!-- Footer Section Begin -->
+    <footer class="footer">
+        <div class="page-up">
+            <a href="#" id="scrollToTopButton"><span class="arrow_carrot-up"></span></a>
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3">
+                    <div class="footer__logo">
+                        <a href="{{ url_for('home') }}">
+                            <h5>
+                                <span style="color: white;">Game</span><span style="color: #e53637;">zawy</span>
+                            </h5>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="footer__nav">
+                        <ul>
+                            <li class="active"><a href="{{ url_for('home') }}">Homepage</a></li>
+                            <li><a href="{{ url_for('categories') }}">Categories</a></li>
+                            {% if user: %}
+                            <li><a href="{{ url_for('logout') }}">Logout</a></li>
+                            {% else: %}
+                            <li><a href="{{ url_for('login') }}">Login</a></li>
+                            {% endif %}
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-3">
+                    <p>
+                        Copyright &copy;
+                        <script>document.write(new Date().getFullYear());</script> All rights reserved
+                    </p>
+
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!-- Footer Section End -->
+
+    <!-- Search model Begin -->
+    <div class="search-model">
+        <div class="h-100 d-flex align-items-center justify-content-center">
+            <div class="search-close-switch"><i class="icon_close"></i></div>
+            <form class="search-model-form">
+                <input type="text" id="search-input" placeholder="Search here.....">
+            </form>
+        </div>
+    </div>
+    <!-- Search model end -->
+
+    <!-- Js Plugins -->
+    <script src="../static/js/jquery-3.3.1.min.js"></script>
+    <script src="../static/js/bootstrap.min.js"></script>
+    <script src="../static/js/player.js"></script>
+    <script src="../static/js/jquery.nice-select.min.js"></script>
+    <script src="../static/js/mixitup.min.js"></script>
+    <script src="../static/js/jquery.slicknav.js"></script>
+    <script src="../static/js/owl.carousel.min.js"></script>
+    <script src="../static/js/main.js"></script>
+
+
+</body>
+
+</html>

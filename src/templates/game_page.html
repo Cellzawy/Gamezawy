@@ -3,8 +3,8 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="description" content="Gamezawy Game Store">
-    <meta name="keywords" content="Games">
+    <meta name="description" content="Anime Template">
+    <meta name="keywords" content="Anime, unica, creative, html">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Gamezawy</title>
@@ -48,15 +48,18 @@
                     <div class="header__nav">
                         <nav class="header__menu mobile-menu">
                             <ul>
-                                <li><a href="{{ url_for('home') }}">Homepage</a></li>
-                                <li><a href="{{ url_for('login') }}">Login<span class="arrow_carrot-down"></span></a>
+                                <li class="active"><a href="{{ url_for('home') }}">Homepage</a></li>
+                                <li><a href="./categories.html">Categories <span class="arrow_carrot-down"></span></a>
                                     <ul class="dropdown">
-                                        <li><a href="./categories.html">Categories</a></li>
-                                        <li><a href="./anime-details.html">Library</a></li>
-                                        <li><a href="{{ url_for('signup') }}">Sign Up</a></li>
+                                        <li><a href="./categories.html">Library</a></li>
+
                                     </ul>
                                 </li>
-                                <li><a href="#">Contacts</a></li>
+                                {% if user: %}
+                                <li><a href="{{ url_for('logout') }}">Logout</a></li>
+                                {% else: %}
+                                <li><a href="{{ url_for('login') }}">Login</a></li>
+                                {% endif %}
                             </ul>
                         </nav>
                     </div>
@@ -64,7 +67,7 @@
                 <div class="col-lg-2">
                     <div class="header__right">
                         <a href="#" class="search-switch"><span class="icon_search"></span></a>
-                        <a href="./login.html"><span class="icon_profile"></span></a>
+                        <a href="{{ url_for('login') }}"><span class="icon_profile"></span></a>
                     </div>
                 </div>
             </div>
@@ -73,63 +76,78 @@
     </header>
     <!-- Header End -->
 
-    <!-- Normal Breadcrumb Begin -->
-    <section class="normal-breadcrumb set-bg" data-setbg="../static/img/normal-breadcrumb.jpg">
+    <!-- Breadcrumb Begin -->
+    <div class="breadcrumb-option">
         <div class="container">
             <div class="row">
-                <div class="col-lg-12 text-center">
-                    <div class="normal__breadcrumb__text">
-                        <h2 class="outlined-text">Login</h2>
-                        <p class="outlined-text">Welcome to our game store.</p>
+                <div class="col-lg-12">
+                    <div class="breadcrumb__links">
+                        <a href="./index.html"><i class="fa fa-home"></i> Home</a>
+                        <span>{{game['name']}}</span>
                     </div>
                 </div>
             </div>
         </div>
-    </section>
-    <!-- Normal Breadcrumb End -->
+    </div>
+    <!-- Breadcrumb End -->
 
-    <!-- Login Section Begin -->
-    <section class="login spad">
+    <!-- Anime Section Begin -->
+    <section class="anime-details">
         <div class="container">
-            <div class="row">
-                <div class="col-lg-6">
-                    <div class="login__form">
-                        <h3>Login</h3>
-                        <form method="post" accept="/login" method="POST">
-                            <div class="input__item">
-                                <input type="text" name="email" placeholder="Email address">
-                                <span class="icon_mail"></span>
-                            </div>
-                            <div class="input__item">
-                                <input type="password" name="password" placeholder="Password">
-                                <span class="icon_lock"></span>
-                            </div>
-                            <button type="submit" class="site-btn">Login Now</button>
-                        </form>
-                        <a href="#" class="forget_pass">Forgot Your Password?</a>
+            <div class="anime__details__content">
+                <div class="row">
+                    <div class="col-lg-3">
+                        <div class="anime__details__pic set-bg"
+                            data-setbg="{{ url_for('static',filename='img/game/' + game['img_path']) }}">
+                        </div>
                     </div>
-                </div>
-                <div class="col-lg-6">
-                    <div class="login__register">
-                        <h3>Don’t Have An Account?</h3>
-                        <a href="{{ url_for('signup') }}" class="primary-btn">Register Now</a>
+                    <div class="col-lg-9">
+                        <div class="anime__details__text">
+                            <div class="anime__details__title">
+                                <h3>{{game['name']}}</h3>
+                                <!-- <span>Grand Theft Auto 5</span> -->
+                            </div>
+                            <div class="anime__details__rating">
+                                <div class="rating">
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star-half-o"></i>
+                                </div>
+                                <span>${{ game['price'] }}</span>
+                            </div>
+                            <p>{{ game['description'] }}</p>
+                            <div class="anime__details__widget">
+                                <div class="row">
+                                    <div class="col-lg-6 col-md-6">
+                                        <ul>
+                                            <li><span>Developers :</span>{{ game['developers'] }}</li>
+                                            <li><span>Release Date :</span>{{ game['release_date'] }}</li>
+                                            <li><span>Genres :</span>{{ game['genres'] }}</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="anime__details__btn">
+                                <a href="#" class="follow-btn"><i class="fa fa-shopping-cart"></i> Add to Cart</a>
+                                <a href="#" class="watch-btn"><span>Buy Now</span> <i class="fa fa-angle-right"></i></a>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
-    <!-- Login Section End -->
+    <!-- Anime Section End -->
 
     <!-- Footer Section Begin -->
     <footer class="footer">
-        <div class="page-up">
-            <a href="#" id="scrollToTopButton"><span class="arrow_carrot-up"></span></a>
-        </div>
         <div class="container">
             <div class="row">
                 <div class="col-lg-3">
                     <div class="footer__logo">
-                        <a href="{{ url_for('home') }}">
+                        <a href="./index.html">
                             <h5>
                                 <span style="color: white;">Game</span><span style="color: #e53637;">zawy</span>
                             </h5>
@@ -139,8 +157,13 @@
                 <div class="col-lg-6">
                     <div class="footer__nav">
                         <ul>
-                            <li class="active"><a href="{{ url_for('home') }}">Homepage</a></li>
+                            <li class="active"><a href="./index.html">Homepage</a></li>
                             <li><a href="./categories.html">Categories</a></li>
+                            {% if user: %}
+                            <li><a href="{{ url_for('logout') }}">Logout</a></li>
+                            {% else: %}
+                            <li><a href="{{ url_for('login') }}">Login</a></li>
+                            {% endif %}
                         </ul>
                     </div>
                 </div>
@@ -149,7 +172,6 @@
                         Copyright &copy;
                         <script>document.write(new Date().getFullYear());</script> All rights reserved
                     </p>
-
                 </div>
             </div>
         </div>
@@ -176,7 +198,6 @@
     <script src="../static/js/jquery.slicknav.js"></script>
     <script src="../static/js/owl.carousel.min.js"></script>
     <script src="../static/js/main.js"></script>
-
 
 </body>
 

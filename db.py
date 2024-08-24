@@ -30,7 +30,8 @@ def init_db(connection):
             description TEXT NOT NULL,
             genres TEXT NOT NULL,
             release_date TEXT NOT NULL,
-            img_path TEXT NOT NULL
+            img_path TEXT NOT NULL,
+            developers TEXT NOT NULL
         );
     ''')
 
@@ -99,4 +100,16 @@ def search_games(connection, search_query):
     cursor = connection.cursor()
     query = '''SELECT name FROM games WHERE name LIKE ?'''
     cursor.execute(query, (f"%{search_query}%",))
+    return cursor.fetchall()
+
+def get_game(connection, game_id):
+    cursor = connection.cursor()
+    query = '''SELECT * FROM games WHERE id = ?'''
+    cursor.execute(query, (game_id,))
+    return cursor.fetchone()
+
+def get_all_games(connection):
+    cursor = connection.cursor()
+    query = 'SELECT * FROM games'
+    cursor.execute(query)
     return cursor.fetchall()

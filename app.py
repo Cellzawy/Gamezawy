@@ -12,6 +12,14 @@ app.secret_key = "SUPER-SECRET"
 limiter = Limiter(app=app, key_func=get_remote_address, default_limits=["50 per minute"], storage_uri="memory://")
 app.config['SESSION_COOKIE_HTTPONLY'] = False
 
+@app.route('/', methods=['GET', 'POST'])
+def home():
+    games = db.get_all_games(connection)
+    if 'email' not in session:
+        return render_template('index.html', user=None, games=games)
+    user = db.get_user(connection, session['email'])
+    return render_template('index.html', user=user, games=games)
+
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
     if request.method == 'POST':
@@ -56,8 +64,9 @@ def login():
         if user:
             if utils.is_password_match(password, user['password']):
                 session['username'] = user['username']
+                session['email'] = user['email']
                 session['user_id'] = user['id']
-                return "Logged in Successfully!"
+                return f"Logged in Successfully!. Welcome {session['username']}"
             else:
                 # flash("Invalid Password or Email", "danger")
                 return "Invalid Password or Email"
@@ -67,6 +76,25 @@ def login():
             return "Invalid Password or Email", "danger"
 
     return render_template('login.html')
+
+@app.route('/game/<id>', methods=['GET', 'POST'])
+def game_page(id):
+    game = db.get_game(connection,id)
+    if 'email' not in session:
+        if game :
+            return render_template('game_page.html', game=game, user=None)
+        else :
+            return "GAME NOT FOUND!", 404
+    user = db.get_user(connection, session['email'])
+    return render_template('game_page.html',game=game,user=user)
+
+@app.route('/logout')
+def logout():
+    return redirect(url_for('login'))
+
+@app.route('/categories')
+def categories():
+    return render_template('categories.html')
 
 if __name__ == '__main__':
     db.init_db(connection)
