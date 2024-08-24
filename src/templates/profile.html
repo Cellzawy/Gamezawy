@@ -23,6 +23,50 @@
     <link rel="stylesheet" href="../static/css/owl.carousel.min.css" type="text/css">
     <link rel="stylesheet" href="../static/css/slicknav.min.css" type="text/css">
     <link rel="stylesheet" href="../static/css/style.css" type="text/css">
+    <style>
+        form {
+            max-width: 500px;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        input[type="text"],
+        input[type="password"],
+        input[type="email"],
+        input[type="tel"] {
+            width: 100%;
+            height: 40px;
+            margin-bottom: 20px;
+            padding: 10px;
+            border: 1px solid #ccc;
+        }
+
+        input[type="file"] {
+            margin-bottom: 20px;
+        }
+
+        button[type="submit"] {
+            width: 100%;
+            height: 40px;
+            background-color: #007bff;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+    </style>
 </head>
 
 <body>
@@ -77,69 +121,51 @@
     </header>
     <!-- Header End -->
 
-    <!-- Normal Breadcrumb Begin -->
-    <section class="normal-breadcrumb set-bg" data-setbg="../static/img/normal-breadcrumb.jpg">
+
+
+    <!-- Profile Section Begin -->
+    <section class="spad">
         <div class="container">
-            <div class="row">
-                <div class="col-lg-12 text-center">
-                    <div class="normal__breadcrumb__text">
-                        <h2 class="outlined-text">Login</h2>
-                        <p class="outlined-text">Welcome to our game store.</p>
+            <div class="profile">
+                <div class="profile-info">
+                    <div class="profile-pic">
+                        <img src="../static/img/logo.png" alt="Profile Picture">
                     </div>
+                    <h2>Username</h2>
+                </div>
+                <div class="profile-edit">
+                    <form action="/update-profile" method="post" enctype="multipart/form-data">
+                        <h2>Edit Profile</h2>
+                        <label for="name">Name:</label>
+                        <input type="text" id="name" name="name" placeholder="Your Current Name" value="Username"
+                            required>
+
+                        <label for="email">Email:</label>
+                        <input type="email" id="email" name="email" placeholder="Your Email" value="name@xyz.com"
+                            required>
+
+                        <label for="opassword">Current Password:</label>
+                        <input type="password" id="opassword" name="opassword" placeholder="Your old password" required>
+
+                        <label for="password">New Password:</label>
+                        <input type="password" id="password" name="password" placeholder="Your new password" required>
+
+                        <label for="cpassword">Confirm Password:</label>
+                        <input type="password" id="cpassword" name="cpassword" placeholder="Your new password" required>
+
+                        <label for="cc">Credit Card:</label>
+                        <input type="tel" id="phone" name="phone" placeholder="1234567890" required>
+
+                        <label for="profilePicture">Profile Picture:</label>
+                        <input type="file" id="profilePicture" name="profilePicture" accept="image/*">
+
+                        <button type="submit">Update Profile</button>
+                    </form>
                 </div>
             </div>
         </div>
     </section>
-    <!-- Normal Breadcrumb End -->
-
-    <!-- Login Section Begin -->
-    <section class="login spad">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-6">
-                    <div class="login__form">
-                        <h3>Login</h3>
-                        <form action="#">
-                            <div class="input__item">
-                                <input type="text" placeholder="Email address">
-                                <span class="icon_mail"></span>
-                            </div>
-                            <div class="input__item">
-                                <input type="text" placeholder="Password">
-                                <span class="icon_lock"></span>
-                            </div>
-                            <button type="submit" class="site-btn">Login Now</button>
-                        </form>
-                        <a href="#" class="forget_pass">Forgot Your Password?</a>
-                    </div>
-                </div>
-                <div class="col-lg-6">
-                    <div class="login__register">
-                        <h3>Dont’t Have An Account?</h3>
-                        <a href="#" class="primary-btn">Register Now</a>
-                    </div>
-                </div>
-            </div>
-            <div class="login__social">
-                <div class="row d-flex justify-content-center">
-                    <div class="col-lg-6">
-                        <div class="login__social__links">
-                            <span>or</span>
-                            <ul>
-                                <li><a href="#" class="facebook"><i class="fa fa-facebook"></i> Sign in With
-                                        Facebook</a></li>
-                                <li><a href="#" class="google"><i class="fa fa-google"></i> Sign in With Google</a></li>
-                                <li><a href="#" class="twitter"><i class="fa fa-twitter"></i> Sign in With Twitter</a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    <!-- Login Section End -->
-
+    <!-- Profile Section End -->
     <!-- Footer Section Begin -->
     <footer class="footer">
         <div class="page-up">
