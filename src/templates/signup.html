@@ -94,9 +94,10 @@
             <div class="row">
                 <div class="col-lg">
                     <div class="login__form"
-                        style="padding: 0; display: flex;align-items: center;flex-direction: column;">
+                        style="padding: 0; display: flex; justify-content: center; flex-direction: column; align-items: center;">
                         <h3>Sign Up</h3>
-                        <form method="post" action="/signup" style="display: flex;flex-direction: column;">
+                        <form method="post" action="/signup"
+                            style="display: flex;flex-direction: column; align-items: center;">
                             <div class="input__item">
                                 <input type="text" name="email" placeholder="Email address">
                                 <span class="icon_mail"></span>
@@ -109,7 +110,11 @@
                                 <input type="password" name="password" placeholder="Password">
                                 <span class="icon_lock"></span>
                             </div>
-                            <button type="submit" class="site-btn">Signup Now</button>
+                            <button style="margin-bottom: 30px;" type="submit" class="site-btn">Signup Now</button>
+                            <span
+                                style="display:block;color:#e53637;font-size: 20px;width: 100%;text-align:center;">{%if
+                                error_msg:%}<i class="fa fa-exclamation-triangle" aria-hidden="true"></i>{%endif%}
+                                {{error_msg}}</span>
                         </form>
                         <h5>Already have an account? <a href="{{ url_for('login') }}">Log In!</a></h5>
                     </div>

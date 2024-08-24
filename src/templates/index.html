@@ -44,7 +44,7 @@
                         </a>
                     </div>
                 </div>
-                <div class="col-lg-8">
+                <div class="col-lg-7">
                     <div class="header__nav">
                         <nav class="header__menu mobile-menu">
                             <ul>
@@ -63,9 +63,13 @@
                         </nav>
                     </div>
                 </div>
-                <div class="col-lg-2">
+                <div class="col-lg-3">
                     <div class="header__right">
-                        <a href="#" class="search-switch"><span class="icon_search"></span></a>
+                        {% if user: %}
+                        <a href="#"><i class="fa fa-shopping-cart"></i></a>
+                        <a href="#"><i class="fa fa-money"></i> {{ user['balance'] }}</a>
+                        {% endif %}
+                        <a href=" #" class="search-switch"><span class="icon_search"></span></a>
                         <a href="./login.html"><span class="icon_profile"></span></a>
                     </div>
                 </div>
@@ -119,7 +123,7 @@
                             </div>
                         </div>
                         <div class="row">
-                            {%for game in games:%}
+                            {%for game in games[3:]:%}
                             <div class="col-lg-4 col-md-6 col-sm-6">
                                 <div class="product__item">
                                     <div class="product__item__pic set-bg"
@@ -152,7 +156,7 @@
                             </div>
                         </div>
                         <div class="row">
-                            {%for game in games:%}
+                            {%for game in games[3:]:%}
                             <div class="col-lg-4 col-md-6 col-sm-6">
                                 <div class="product__item">
                                     <div class="product__item__pic set-bg"
@@ -179,7 +183,7 @@
                                 <h5>Top Views</h5>
                             </div>
                             <div class="filter__gallery">
-                                {%for game in games:%}
+                                {%for game in games[3:]:%}
                                 <div class="product__sidebar__view__item set-bg mix day years"
                                     data-setbg="{{ url_for('static',filename='img/game/' + game['img_path']) }}">
                                     <h5><a href="{{ url_for('game_page', id=game['id']) }}">{{ game['name'] }}</a></h5>

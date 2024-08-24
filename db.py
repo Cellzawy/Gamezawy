@@ -54,6 +54,15 @@ def init_db(connection):
         );
     ''')
 
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS in_library (
+            user_id INTEGER NOT NULL,
+            game_id INTEGER NOT NULL, 
+            FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE, 
+            FOREIGN KEY (game_id) REFERENCES games(id) ON DELETE CASCADE 
+        )
+    ''')
+
     connection.commit()
 
 
