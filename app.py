@@ -15,14 +15,20 @@ app.config['SESSION_COOKIE_HTTPONLY'] = False
 @app.route('/', methods=['GET', 'POST'])
 def home():
     games = db.get_all_games(connection)
-    if 'email' not in session:
+    if "email" in session :
+        if session['email'] == "admin@gmail.com":
+            return redirect(url_for('admin_add_game'))
+    else:
         return render_template('index.html', user=None, games=games)
     user = db.get_user(connection, session['email'])
     return render_template('index.html', user=user, games=games)
 
 @app.route('/library', methods=['GET', 'POST'])
 def library():
-    if 'email' not in session:
+    if "email" in session :
+        if session['email'] == "admin@gmail.com":
+            return redirect(url_for('admin_add_game'))
+    else:
         return render_template('login.html',error_msg="")
     user = db.get_user(connection, session['email'])
     games = db.get_user_games(connection, user['id'])
@@ -31,7 +37,10 @@ def library():
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
     if "email" in session :
-        return redirect(url_for('home'))
+        if session['email'] == "admin@gmail.com":
+            return redirect(url_for('admin_add_game'))
+        else:
+            return redirect(url_for('home'))
     if request.method == 'POST':
         email = escape(request.form['email'])
         username = escape(request.form['name'])
@@ -54,12 +63,14 @@ def signup():
 
     return render_template('signup.html',error_msg="")
 
-# @limiter.limit("3 per minute")
 @app.route('/login', methods=['GET', 'POST'])
+@limiter.limit("3 per minute")
 def login():
-
     if "email" in session :
-        return redirect(url_for('home'))
+        if session['email'] == "admin@gmail.com":
+            return redirect(url_for('admin_add_game'))
+        else:
+            return redirect(url_for('home'))
     
     if request.method == 'POST':
         email = request.form['email']
@@ -69,6 +80,11 @@ def login():
             return render_template('login.html',error_msg="Invalid Email")
 
         user = db.get_user(connection, email)
+
+        if user["email"] == "admin@gmail.com" and utils.is_password_match(password ,user["password"]) :
+            session['username'] = user["username"]
+            session['email'] = user["email"]
+            return redirect(url_for('admin_add_game'))
 
         if user:
             if utils.is_password_match(password, user['password']):
@@ -87,13 +103,16 @@ def login():
 @app.route('/game/<id>', methods=['GET', 'POST'])
 def game_page(id):
     game = db.get_game(connection,id)
-    if 'email' not in session:
+    if "email" in session :
+        if session['email'] == "admin@gmail.com":
+            return redirect(url_for('admin_add_game'))
+    else:
         if game :
-            return render_template('game_page.html', game=game, user=None)
+            return render_template('game_page.html', game=game, user=None, in_library=db.is_game_in_library(connection))
         else :
             return "GAME NOT FOUND!", 404
     user = db.get_user(connection, session['email'])
-    return render_template('game_page.html',game=game,user=user)
+    return render_template('game_page.html',game=game,user=user, in_library=db.is_game_in_library(connection, game['id'], user['id']))
 
 @app.route('/logout')
 def logout():
@@ -104,11 +123,49 @@ def logout():
 
 @app.route('/info', methods=['GET', 'POST'])
 def info():
+    games = db.get_all_games(connection)
+    if "email" in session :
+        if session['email'] == "admin@gmail.com":
+            return redirect(url_for('admin_add_game'))
+    else:
+        return render_template('index.html', user=None, games=games)
     return render_template("profile.html")
 
 @app.route('/categories')
 def categories():
     return render_template('categories.html')
+
+@app.route('/search', methods=['GET', 'POST'])
+def search():
+    if request.method == "POST" :
+        query = request.form['search']
+        games = db.search_games(connection, query)
+    else:
+        games = db.get_all_games(connection)
+    if "email" in session :
+        if session['email'] == "admin@gmail.com":
+            return redirect(url_for('admin_add_game'))
+    else:
+        return render_template('search.html', user=None, games=games, query=query)
+    user = db.get_user(connection, session['email'])
+    return render_template('search.html',user=user, games=games, query=query)
+
+@app.route('/add_game', methods=['GET', 'POST'])
+def admin_add_game():
+    if 'email' not in session:
+        return redirect(url_for('home'))
+    if session['email'] != 'admin@gmail.com':
+        return "Access Denied", 403
+    return render_template("admin-add.html")
+
+@app.route('/edit_game', methods=['GET', 'POST'])
+def admin_edit_game():
+    if 'email' not in session:
+        return redirect(url_for('home'))
+    if session['email'] != 'admin@gmail.com':
+        return "Access Denied", 403
+    games = db.get_all_games(connection)
+    return render_template("admin-edit.html", games=games)
 
 if __name__ == '__main__':
     db.init_db(connection)

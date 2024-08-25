@@ -33,7 +33,7 @@
             border-radius: 10px;
             padding: 20px;
             margin-bottom: 20px;
-            width: 100%;
+            width: 80%;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
 
@@ -77,7 +77,7 @@
             <div class="row">
                 <div class="col-lg-2">
                     <div class="header__logo">
-                        <a href="./index.html">
+                        <a href=" {{url_for('admin_add_game')}} ">
                             <h4>
                                 <span style="color: white;">Game</span><span style="color: #e53637;">zawy</span>
                             </h4>
@@ -87,28 +87,12 @@
                 <div class="col-lg-8">
                     <div class="header__nav">
                         <nav class="header__menu mobile-menu">
-                            <ul>
-                                <li><a href="./index.html">Homepage</a></li>
-                                <li><a href="./categories.html">Categories <span class="arrow_carrot-down"></span></a>
-                                    <ul class="dropdown">
-                                        <li><a href="./categories.html">Categories</a></li>
-                                        <li><a href="./anime-details.html">Anime Details</a></li>
-                                        <li><a href="./anime-watching.html">Anime Watching</a></li>
-                                        <!-- <li><a href="./blog-details.html">Blog Details</a></li> -->
-                                        <li><a href="./signup.html">Sign Up</a></li>
-                                        <li><a href="./login.html">Login</a></li>
-                                    </ul>
-                                </li>
-                                <!-- <li><a href="./blog.html">Our Blog</a></li> -->
-                                <li><a href="#">Contacts</a></li>
-                            </ul>
                         </nav>
                     </div>
                 </div>
                 <div class="col-lg-2">
                     <div class="header__right">
-                        <a href="#" class="search-switch"><span class="icon_search"></span></a>
-                        <a href="./login.html"><span class="icon_profile"></span></a>
+                        <a href="{{ url_for('logout') }}">Logout</a>
                     </div>
                 </div>
             </div>
@@ -124,20 +108,23 @@
         <h2 style="text-align: center;margin-bottom: 2rem;color: white;">Admin Panel</h2>
         <div>
             <ul style="display: flex;list-style: none;justify-content: center;">
-                <li><button class="button-select" style="margin: 1rem;border-bottom: 1px solid #fff;">➕ Add a
+                <li><button class="button-select" style="margin: 1rem;border-bottom: 1px solid #fff;"
+                        onclick="location.href='add_game'">➕ Add a
                         game</button></li>
-                <li><button class="button-select" style="margin: 1rem;" onclick="location.href='admin-edit.html'">🖊️
-                        Edit a game</button></li>
+                <li><button class="button-select" style="margin: 1rem;" onclick="location.href='edit_game'">➕ Edit a
+                        game</button></li>
             </ul>
         </div>
-        <div class="container game" style="display: flex; flex-direction: column;">
-            <div class="game-view">
-                <div style="text-align: center;">
-                    <img src="../static//img/gta5.jpg" alt="Game 2 Cover">
-                    <h2>Game 1</h2>
-                </div>
+        <div class="container game"
+            style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+            <div class="game-view"
+                style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                <!-- <div style=" text-align: center;">
+                <img src="../static//img/gta5.jpg" alt="">
+                <h2>Game 1</h2>
+            </div> -->
                 <div>
-                    <form id="game-info-form" method="post" action="/update-game-info">
+                    <form id="game-info-form" method="post" action="/update-game-info" style="width: 100%;">
                         <label for="game-title">Title:</label>
                         <input type="text" id="game-title" name="title" placeholder="Game 1">
                         <label for="game-genre">Genre:</label>
@@ -152,8 +139,10 @@
                         <input type="text" id="game-publisher" name="publisher" placeholder="Game Publisher.."><br><br>
                         <label for="game-description"
                             style="vertical-align: top; margin-right: 1rem;">Description:</label>
-                        <textarea id="game-description" name="description" rows="5"
-                            cols="50"placeholder="Enter game description here..."></textarea><br><br>
+                        <textarea id="game-description" name="description" rows="5" cols="50"
+                            placeholder="Enter game description here..."></textarea><br><br>
+                        <label for="img">Select image:</label>
+                        <input type="file" id="img" name="img" accept="image/*">
                         <button type="submit" style="float: right;">Add Game</button>
                     </form>
                 </div>
@@ -177,14 +166,6 @@
                     </div>
                 </div>
                 <div class="col-lg-6">
-                    <div class="footer__nav">
-                        <ul>
-                            <li class="active"><a href="./index.html">Homepage</a></li>
-                            <li><a href="./categories.html">Categories</a></li>
-                            <!-- <li><a href="./blog.html">Our Blog</a></li> -->
-                            <li><a href="#">Contacts</a></li>
-                        </ul>
-                    </div>
                 </div>
                 <div class="col-lg-3">
                     <p><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->

@@ -35,7 +35,7 @@
     <header class="header">
         <div class="container">
             <div class="row">
-                <div class="col-lg-2">
+                <div class="col-lg-3">
                     <div class="header__logo">
                         <a href="{{ url_for('home') }}">
                             <h4>
@@ -44,19 +44,14 @@
                         </a>
                     </div>
                 </div>
-                <div class="col-lg-7">
+                <div class="col-lg-6">
                     <div class="header__nav">
                         <nav class="header__menu mobile-menu">
                             <ul>
                                 <li class="active"><a href="{{ url_for('home') }}">Homepage</a></li>
                                 {% if user: %}
-                                <li><a href="{{ url_for('library') }}">Library<span class="arrow_carrot-down"></a>
-                                    <ul class="dropdown">
-                                        <li><a href="{{ url_for('categories') }}">Categories</a></li>
-                                    </ul>
+                                <li><a href="{{ url_for('library') }}">Library</a>
                                 </li>
-                                {% else: %}
-                                <li><a href="{{ url_for('categories') }}">Categories</a></li>
                                 {% endif %}
                                 {% if user: %}
                                 <li><a href="{{ url_for('logout') }}">Logout</a></li>
@@ -73,7 +68,7 @@
                         <a href="#"><i class="fa fa-shopping-cart"></i></a>
                         <a href="#"><i class="fa fa-money"></i> {{ user['balance'] }}</a>
                         {% endif %}
-                        <a href=" #" class="search-switch"><span class="icon_search"></span></a>
+                        <a href="#" class="search-switch"><span class="icon_search"></span></a>
                         {% if user: %}
                         <a href="{{ url_for('info') }}"><span class="icon_profile"></span></a>
                         {% else: %}
@@ -100,7 +95,7 @@
                                 <div class="label">{{ game['genres'].split(',',1)[0] }}</div>
                                 <h2>{{ game['name'] }}</h2>
                                 <p>{{ game['description'] }}</p>
-                                <a href="{{ url_for('game_page', id=game['id']) }}"><span>Buy Now</span> <i
+                                <a href="{{ url_for('game_page', id=game['id']) }}"><span>View</span> <i
                                         class="fa fa-angle-right"></i></a>
                             </div>
                         </div>
@@ -231,7 +226,7 @@
                     <div class="footer__nav">
                         <ul>
                             <li class="active"><a href="{{ url_for('home') }}">Homepage</a></li>
-                            <li><a href="{{ url_for('categories') }}">Categories</a></li>
+                            <li class="active"><a href="{{ url_for('library') }}">Library</a></li>
                             {% if user: %}
                             <li><a href="{{ url_for('logout') }}">Logout</a></li>
                             {% else: %}
@@ -256,8 +251,8 @@
     <div class="search-model">
         <div class="h-100 d-flex align-items-center justify-content-center">
             <div class="search-close-switch"><i class="icon_close"></i></div>
-            <form class="search-model-form">
-                <input type="text" id="search-input" placeholder="Search here.....">
+            <form action="{{ url_for('search') }}" class="search-model-form" method="POST">
+                <input type="text" id="search-input" name="search" placeholder="Search here.....">
             </form>
         </div>
     </div>

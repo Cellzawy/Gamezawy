@@ -105,10 +105,9 @@ def seed_admin_user(connection):
     if not admin_user:
         add_user(connection, admin_name, admin_password, admin_email)
 
-
 def search_games(connection, search_query):
     cursor = connection.cursor()
-    query = '''SELECT name FROM games WHERE name LIKE ?'''
+    query = '''SELECT * FROM games WHERE name LIKE ?'''
     cursor.execute(query, (f"%{search_query}%",))
     return cursor.fetchall()
 
@@ -134,3 +133,12 @@ def get_user_games(connection, id):
     '''
     cursor.execute(query, (id,))
     return cursor.fetchall()
+
+def is_game_in_library(connection,game_id = None,user_id = None):
+    cursor = connection.cursor()
+    query = '''
+        SELECT * FROM in_library
+        WHERE game_id = ? AND user_id = ?;
+    '''
+    cursor.execute(query, (game_id,user_id))
+    return cursor.fetchone()
