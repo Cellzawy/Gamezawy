@@ -49,10 +49,10 @@
                         <nav class="header__menu mobile-menu">
                             <ul>
                                 <li><a href="{{ url_for('home') }}">Homepage</a></li>
-                                <li><a href="{{ url_for('login') }}">Login<span class="arrow_carrot-down"></span></a>
+                                <li class="active"><a href="{{ url_for('login') }}">Login<span
+                                            class="arrow_carrot-down"></span></a>
                                     <ul class="dropdown">
                                         <li><a href="./categories.html">Categories</a></li>
-                                        <li><a href="./anime-details.html">Library</a></li>
                                         <li><a href="{{ url_for('signup') }}">Sign Up</a></li>
                                     </ul>
                                 </li>

@@ -127,7 +127,7 @@
                             </div>
                         </div>
                         <div class="row">
-                            {%for game in games[3:]:%}
+                            {%for game in games[3:9]:%}
                             <div class="col-lg-4 col-md-6 col-sm-6">
                                 <div class="product__item">
                                     <div class="product__item__pic set-bg"
@@ -136,7 +136,9 @@
                                     <div class="product__item__text">
                                         <ul>
                                             <li>{{ game['genres'].split(',',1)[0] }}</li>
-                                            <li>{{ game['genres'].split(',',1)[1] }}</li>
+                                            {%if game['genres'].split(',',1)[1]:%}
+                                            <li>{{ (game['genres'].split(',',1)[1]).split(',',1)[0] }}</li>
+                                            {%endif%}
                                         </ul>
                                         <h5><a href="{{ url_for('game_page', id=game['id']) }}">{{ game['name'] }}</a>
                                         </h5>
@@ -160,7 +162,7 @@
                             </div>
                         </div>
                         <div class="row">
-                            {%for game in games[3:]:%}
+                            {%for game in games[9:15]:%}
                             <div class="col-lg-4 col-md-6 col-sm-6">
                                 <div class="product__item">
                                     <div class="product__item__pic set-bg"
@@ -169,7 +171,9 @@
                                     <div class="product__item__text">
                                         <ul>
                                             <li>{{ game['genres'].split(',',1)[0] }}</li>
-                                            <li>{{ game['genres'].split(',',1)[1] }}</li>
+                                            {%if game['genres'].split(',',1)[1]:%}
+                                            <li>{{ (game['genres'].split(',',1)[1]).split(',',1)[0] }}</li>
+                                            {%endif%}
                                         </ul>
                                         <h5><a href="{{ url_for('game_page', id=game['id']) }}">{{ game['name'] }}</a>
                                         </h5>
@@ -187,7 +191,7 @@
                                 <h5>Top Views</h5>
                             </div>
                             <div class="filter__gallery">
-                                {%for game in games[3:]:%}
+                                {%for game in games[15:]:%}
                                 <div class="product__sidebar__view__item set-bg mix day years"
                                     data-setbg="{{ url_for('static',filename='img/game/' + game['img_path']) }}">
                                     <h5><a href="{{ url_for('game_page', id=game['id']) }}">{{ game['name'] }}</a></h5>

@@ -23,6 +23,11 @@
     <link rel="stylesheet" href="../static/css/owl.carousel.min.css" type="text/css">
     <link rel="stylesheet" href="../static/css/slicknav.min.css" type="text/css">
     <link rel="stylesheet" href="../static/css/style.css" type="text/css">
+    <style>
+        .login__form:after {
+            width: 0px;
+        }
+    </style>
 </head>
 
 <body>
@@ -49,9 +54,9 @@
                         <nav class="header__menu mobile-menu">
                             <ul>
                                 <li><a href=".{{ url_for('home') }}">Homepage</a></li>
-                                <li><a href="{{ url_for('signup') }}">Signup<span class="arrow_carrot-down"></span></a>
+                                <li class="active"><a href="{{ url_for('signup') }}">Signup<span
+                                            class="arrow_carrot-down"></span></a>
                                     <ul class="dropdown">
-                                        <li><a href="./anime-details.html">Library</a></li>
                                         <li><a href="./categories.html">Categories</a></li>
                                         <li><a href="{{ url_for('login') }}">Login</a></li>
                                     </ul>
@@ -93,8 +98,13 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg">
-                    <div class="login__form"
-                        style="padding: 0; display: flex; justify-content: center; flex-direction: column; align-items: center;">
+                    <div class="login__form" style="
+                        padding: 0;
+                        display: flex;
+                        justify-content: center;
+                        flex-direction: column;
+                        align-items: center;
+                        ">
                         <h3>Sign Up</h3>
                         <form method="post" action="/signup"
                             style="display: flex;flex-direction: column; align-items: center;">
