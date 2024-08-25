@@ -14,6 +14,8 @@ app.config['SESSION_COOKIE_HTTPONLY'] = False
 
 @app.route('/', methods=['GET', 'POST'])
 def home():
+    if not 'cart' in session :
+        session['cart'] = []
     games = db.get_all_games(connection)
     if "email" in session :
         if session['email'] == "admin@gmail.com":
@@ -100,6 +102,35 @@ def login():
 
     return render_template('login.html',error_msg="")
 
+@app.route('/add_to_cart/<id>', methods=['GET', 'POST'])
+def add_to_cart(id):
+    game = db.get_game(connection, id)
+    print("Retrieved game:", game)  # Debug print
+
+    if "email" not in session:
+        return redirect(url_for('login'))
+
+    if session['email'] == "admin@gmail.com":
+        return redirect(url_for('admin_add_game'))
+
+    if 'cart' not in session:
+        session['cart'] = []
+
+    session['cart'].append(game)
+
+    return redirect(url_for('game_page', id=game['id']))
+
+@app.route('/cart', methods=['GET', 'POST'])
+def cart():
+    if "email" in session :
+        if session['email'] == "admin@gmail.com":
+            return redirect(url_for('admin_add_game'))
+    else:
+        return redirect(url_for('login'))
+    user = db.get_user(connection, session['email'])
+
+    return render_template("cart.html", user=user, games=session['cart'])
+
 @app.route('/game/<id>', methods=['GET', 'POST'])
 def game_page(id):
     game = db.get_game(connection,id)
@@ -119,6 +150,7 @@ def logout():
     session.pop('username', None)
     session.pop('email', None)
     session.pop('user_id', None)
+    session.pop('cart', None)
     return redirect(url_for('login'))
 
 @app.route('/info', methods=['GET', 'POST'])
@@ -130,10 +162,6 @@ def info():
     else:
         return render_template('index.html', user=None, games=games)
     return render_template("profile.html")
-
-@app.route('/categories')
-def categories():
-    return render_template('categories.html')
 
 @app.route('/search', methods=['GET', 'POST'])
 def search():
