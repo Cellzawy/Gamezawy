@@ -70,8 +70,12 @@
                         <a href="#"><i class="fa fa-shopping-cart"></i></a>
                         <a href="#"><i class="fa fa-money"></i> {{ user['balance'] }}</a>
                         {% endif %}
-                        <a href="#" class="search-switch"><span class="icon_search"></span></a>
+                        <a href=" #" class="search-switch"><span class="icon_search"></span></a>
+                        {% if user: %}
+                        <a href="{{ url_for('info') }}"><span class="icon_profile"></span></a>
+                        {% else: %}
                         <a href="{{ url_for('login') }}"><span class="icon_profile"></span></a>
+                        {% endif %}
                     </div>
                 </div>
             </div>

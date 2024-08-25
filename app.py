@@ -94,6 +94,10 @@ def logout():
     session.pop('user_id', None)
     return redirect(url_for('login'))
 
+@app.route('/info', methods=['GET', 'POST'])
+def info():
+    return render_template("profile.html")
+
 @app.route('/categories')
 def categories():
     return render_template('categories.html')
