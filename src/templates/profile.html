@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="zxx">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="Anime Template">
+    <meta name="keywords" content="Anime, unica, creative, html">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Anime | Template</title>
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Mulish:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+
+    <!-- Css Styles -->
+    <link rel="stylesheet" href="../static/css/bootstrap.min.css" type="text/css">
+    <link rel="stylesheet" href="../static/css/font-awesome.min.css" type="text/css">
+    <link rel="stylesheet" href="../static/css/elegant-icons.css" type="text/css">
+    <link rel="stylesheet" href="../static/css/plyr.css" type="text/css">
+    <link rel="stylesheet" href="../static/css/nice-select.css" type="text/css">
+    <link rel="stylesheet" href="../static/css/owl.carousel.min.css" type="text/css">
+    <link rel="stylesheet" href="../static/css/slicknav.min.css" type="text/css">
+    <link rel="stylesheet" href="../static/css/style.css" type="text/css">
+    <style>
+        form {
+            max-width: 500px;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        input[type="text"],
+        input[type="password"],
+        input[type="email"],
+        input[type="tel"] {
+            width: 100%;
+            height: 40px;
+            margin-bottom: 20px;
+            padding: 10px;
+            border: 1px solid #ccc;
+        }
+
+        input[type="file"] {
+            margin-bottom: 20px;
+        }
+
+        button[type="submit"] {
+            width: 100%;
+            height: 40px;
+            background-color: #007bff;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Page Preloder -->
+    <div id="preloder">
+        <div class="loader"></div>
+    </div>
+
+    <!-- Header Section Begin -->
+    <header class="header">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-2">
+                    <div class="header__logo">
+                        <a href="./index.html">
+                            <h4>
+                                <span style="color: white;">Game</span><span style="color: #e53637;">zawy</span>
+                            </h4>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-8">
+                    <div class="header__nav">
+                        <nav class="header__menu mobile-menu">
+                            <ul>
+                                <li><a href="./index.html">Homepage</a></li>
+                                <li><a href="./categories.html">Categories <span class="arrow_carrot-down"></span></a>
+                                    <ul class="dropdown">
+                                        <li><a href="./categories.html">Categories</a></li>
+                                        <li><a href="./anime-details.html">Anime Details</a></li>
+                                        <li><a href="./anime-watching.html">Anime Watching</a></li>
+                                        <!-- <li><a href="./blog-details.html">Blog Details</a></li> -->
+                                        <li><a href="./signup.html">Sign Up</a></li>
+                                        <li><a href="./login.html">Login</a></li>
+                                    </ul>
+                                </li>
+                                <!-- <li><a href="./blog.html">Our Blog</a></li> -->
+                                <li><a href="#">Contacts</a></li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+                <div class="col-lg-2">
+                    <div class="header__right">
+                        <a href="#" class="search-switch"><span class="icon_search"></span></a>
+                        <a href="./login.html"><span class="icon_profile"></span></a>
+                    </div>
+                </div>
+            </div>
+            <div id="mobile-menu-wrap"></div>
+        </div>
+    </header>
+    <!-- Header End -->
+
+
+
+    <!-- Profile Section Begin -->
+    <section class="spad">
+        <div class="container">
+            <div class="profile">
+                <div class="profile-info">
+                    <div class="profile-pic">
+                        <img src="../static/img/logo.png" alt="Profile Picture">
+                    </div>
+                    <h2>Username</h2>
+                </div>
+                <div class="profile-edit">
+                    <form action="/update-profile" method="post" enctype="multipart/form-data">
+                        <h2>Edit Profile</h2>
+                        <label for="name">Name:</label>
+                        <input type="text" id="name" name="name" placeholder="Your Current Name" value="Username"
+                            required>
+
+                        <label for="email">Email:</label>
+                        <input type="email" id="email" name="email" placeholder="Your Email" value="name@xyz.com"
+                            required>
+
+                        <label for="opassword">Current Password:</label>
+                        <input type="password" id="opassword" name="opassword" placeholder="Your old password" required>
+
+                        <label for="password">New Password:</label>
+                        <input type="password" id="password" name="password" placeholder="Your new password" required>
+
+                        <label for="cpassword">Confirm Password:</label>
+                        <input type="password" id="cpassword" name="cpassword" placeholder="Your new password" required>
+
+                        <label for="cc">Credit Card:</label>
+                        <input type="tel" id="phone" name="phone" placeholder="1234567890" required>
+
+                        <label for="profilePicture">Profile Picture:</label>
+                        <input type="file" id="profilePicture" name="profilePicture" accept="image/*">
+
+                        <button type="submit">Update Profile</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Profile Section End -->
+    <!-- Footer Section Begin -->
+    <footer class="footer">
+        <div class="page-up">
+            <a href="#" id="scrollToTopButton"><span class="arrow_carrot-up"></span></a>
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3">
+                    <div class="footer__logo">
+                        <a href="./index.html">
+                            <h4>
+                                <span style="color: white;">Game</span><span style="color: #e53637;">zawy</span>
+                            </h4>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="footer__nav">
+                        <ul>
+                            <li class="active"><a href="./index.html">Homepage</a></li>
+                            <li><a href="./categories.html">Categories</a></li>
+                            <!-- <li><a href="./blog.html">Our Blog</a></li> -->
+                            <li><a href="#">Contacts</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-3">
+                    <p><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                        Copyright &copy;
+                        <script>document.write(new Date().getFullYear());</script> All rights reserved
+                        <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                    </p>
+
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!-- Footer Section End -->
+
+    <!-- Search model Begin -->
+    <div class="search-model">
+        <div class="h-100 d-flex align-items-center justify-content-center">
+            <div class="search-close-switch"><i class="icon_close"></i></div>
+            <form class="search-model-form">
+                <input type="text" id="search-input" placeholder="Search here.....">
+            </form>
+        </div>
+    </div>
+    <!-- Search model end -->
+
+    <!-- Js Plugins -->
+    <script src="../static/js/jquery-3.3.1.min.js"></script>
+    <script src="../static/js/bootstrap.min.js"></script>
+    <script src="../static/js/player.js"></script>
+    <script src="../static/js/jquery.nice-select.min.js"></script>
+    <script src="../static/js/mixitup.min.js"></script>
+    <script src="../static/js/jquery.slicknav.js"></script>
+    <script src="../static/js/owl.carousel.min.js"></script>
+    <script src="../static/js/main.js"></script>
+
+
+</body>
+
+</html>
