@@ -18,7 +18,8 @@ def init_db(connection):
 			password TEXT NOT NULL,
             email TEXT NOT NULL UNIQUE,
             balance REAL NOT NULL DEFAULT 0,
-            credit_card TEXT 
+            credit_card TEXT,
+            pfp TEXT
 		);
 	''')
 
@@ -122,3 +123,53 @@ def get_all_games(connection):
     query = 'SELECT * FROM games'
     cursor.execute(query)
     return cursor.fetchall()
+
+
+def update_username(connection, email, new_name):
+    cursor = connection.cursor()
+    cursor.execute(
+        '''
+            UPDATE users
+            SET username = ?
+            WHERE email = ?
+        '''
+        , (new_name, email)
+    )
+    connection.commit()
+    
+def update_password(connection, email, new_password):
+    cursor = connection.cursor()
+    cursor.execute(
+        '''
+            UPDATE users
+            SET password = ?
+            WHERE email = ?
+        '''
+        , (utils.hash_password(new_password), email)
+    )
+    connection.commit() 
+    
+def update_credit_card(connection, email, new_cc):
+    cursor = connection.cursor()
+    cursor.execute(
+        '''
+            UPDATE users
+            SET credit_card = ?
+            WHERE email = ?
+        '''
+        , (new_cc, email)
+    )
+    connection.commit()
+    
+def update_pfp(connection, email, new_pfp):
+    cursor = connection.cursor()
+    cursor.execute(
+        '''
+            UPDATE users
+            SET img_path = ?
+            WHERE email = ?
+        '''
+        , (new_pfp, email)
+    )
+    connection.commit()
+    
