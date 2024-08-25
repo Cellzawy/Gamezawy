@@ -48,7 +48,7 @@
                     <div class="header__nav">
                         <nav class="header__menu mobile-menu">
                             <ul>
-                                <li class="active"><a href="{{ url_for('home') }}">Homepage</a></li>
+                                <li><a href="{{ url_for('home') }}">Homepage</a></li>
                                 <li><a href="./categories.html">Categories <span class="arrow_carrot-down"></span></a>
                                     <ul class="dropdown">
                                         <li><a href="./categories.html">Library</a></li>
@@ -90,7 +90,7 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="breadcrumb__links">
-                        <a href="./index.html"><i class="fa fa-home"></i> Home</a>
+                        <a href="{{ url_for('home') }}"><i class="fa fa-home"></i> Home</a>
                         <span>{{game['name']}}</span>
                     </div>
                 </div>
@@ -165,7 +165,7 @@
                 <div class="col-lg-6">
                     <div class="footer__nav">
                         <ul>
-                            <li class="active"><a href="./index.html">Homepage</a></li>
+                            <li><a href="./index.html">Homepage</a></li>
                             <li><a href="./categories.html">Categories</a></li>
                             {% if user: %}
                             <li><a href="{{ url_for('logout') }}">Logout</a></li>

@@ -57,11 +57,11 @@
                                 <li class="active"><a href="{{ url_for('signup') }}">Signup<span
                                             class="arrow_carrot-down"></span></a>
                                     <ul class="dropdown">
-                                        <li><a href="./categories.html">Categories</a></li>
+
                                         <li><a href="{{ url_for('login') }}">Login</a></li>
                                     </ul>
                                 </li>
-                                <li><a href="#">Contacts</a></li>
+                                <li><a href="./categories.html">Categories</a></li>
                             </ul>
                         </nav>
                     </div>
@@ -113,7 +113,7 @@
                                 <span class="icon_mail"></span>
                             </div>
                             <div class="input__item">
-                                <input type="text" name="name" placeholder="Your Name">
+                                <input type="text" name="name" placeholder="Your Username">
                                 <span class="icon_profile"></span>
                             </div>
                             <div class="input__item">
@@ -155,7 +155,6 @@
                         <ul>
                             <li class="active"><a href=".{{ url_for('home') }}">Homepage</a></li>
                             <li><a href="./categories.html">Categories</a></li>
-                            <li><a href="#">Contacts</a></li>
                         </ul>
                     </div>
                 </div>

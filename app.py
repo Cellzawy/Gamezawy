@@ -20,6 +20,14 @@ def home():
     user = db.get_user(connection, session['email'])
     return render_template('index.html', user=user, games=games)
 
+@app.route('/library', methods=['GET', 'POST'])
+def library():
+    if 'email' not in session:
+        return render_template('login.html',error_msg="")
+    user = db.get_user(connection, session['email'])
+    games = db.get_user_games(connection, user['id'])
+    return render_template('library.html', user=user, games=games)
+
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
     if "email" in session :
@@ -72,7 +80,7 @@ def login():
                 return render_template('login.html',error_msg="Invalid Password or Email")
 
         else:
-            return render_template('login.html',error_msg="Invalid Password or Email")
+            return render_template('login.html',error_msg="Email Doesn't Exist")
 
     return render_template('login.html',error_msg="")
 

@@ -18,7 +18,8 @@ def init_db(connection):
 			password TEXT NOT NULL,
             email TEXT NOT NULL UNIQUE,
             balance REAL NOT NULL DEFAULT 0,
-            credit_card TEXT 
+            credit_card TEXT, 
+            img_path TEXT
 		);
 	''')
 
@@ -121,4 +122,15 @@ def get_all_games(connection):
     cursor = connection.cursor()
     query = 'SELECT * FROM games'
     cursor.execute(query)
+    return cursor.fetchall()
+
+def get_user_games(connection, id):
+    cursor = connection.cursor()
+    query = '''
+        SELECT games.*
+        FROM in_library
+        JOIN games ON in_library.game_id = games.id
+        WHERE in_library.user_id = ?;
+    '''
+    cursor.execute(query, (id,))
     return cursor.fetchall()
