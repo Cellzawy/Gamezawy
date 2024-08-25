@@ -14,6 +14,7 @@ app.config['SESSION_COOKIE_HTTPONLY'] = False
 
 @app.route('/', methods=['GET', 'POST'])
 def home():
+    print(session)
     games = db.get_all_games(connection)
     if 'email' not in session:
         return render_template('index.html', user=None, games=games)
@@ -96,6 +97,14 @@ def logout():
 
 @app.route('/info', methods=['GET', 'POST'])
 def info():
+    if request.method == 'POST':
+        name = request.form['name']
+        email = request.form['email']
+        opassword = request.form['opassword']
+        password = request.form['password']
+        cpassword = request.form['cpassword']
+        creditcard  = request.form['creditcard']
+
     return render_template("profile.html")
 
 @app.route('/categories')
