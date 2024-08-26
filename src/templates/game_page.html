@@ -133,14 +133,18 @@
                                 </div>
                             </div>
                             <div class="anime__details__btn">
-                                {% if not in_library %}
-                                <a href="{{ url_for('add_to_cart', id=game['id']) }}" class="follow-btn"><i
-                                        class="fa fa-shopping-cart"></i> Add to Cart</a>
-                                <a href="#" class="watch-btn"><span>Buy Now</span> <i class="fa fa-angle-right"></i></a>
-                                {% else %}
+                                {% if in_library %}
                                 <a href="" class="follow-btn"
                                     style="opacity: 0.5; cursor: default; pointer-events: none;">Already in
                                     Library</i></a>
+                                {% elif in_cart: %}
+                                <a href="" class="follow-btn"
+                                    style="opacity: 0.5; cursor: default; pointer-events: none;"> in cart </i></a>
+                                {% else: %}
+                                <a href="{{ url_for('add_to_cart', id=game['id']) }}" class="follow-btn"><i
+                                        class="fa fa-shopping-cart"></i> Add to Cart</a>
+                                <a href="#" class="watch-btn"><span>Buy Now</span> <i class="fa fa-angle-right"></i></a>
+
                                 {% endif %}
                             </div>
                         </div>

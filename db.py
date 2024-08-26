@@ -63,6 +63,15 @@ def init_db(connection):
             FOREIGN KEY (game_id) REFERENCES games(id) ON DELETE CASCADE 
         )
     ''')
+    
+    cursor.execute('''
+       CREATE TABLE IF NOT EXISTS in_cart (
+            user_id INTEGER NOT NULL,
+            game_id INTEGER NOT NULL, 
+            FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE, 
+            FOREIGN KEY (game_id) REFERENCES games(id) ON DELETE CASCADE 
+        )
+    ''')
 
     connection.commit()
 
@@ -134,10 +143,49 @@ def get_user_games(connection, id):
     cursor.execute(query, (id,))
     return cursor.fetchall()
 
+def get_user_cart(connection, id):
+    cursor = connection.cursor()
+    query = '''
+        SELECT games.*
+        FROM in_cart
+        JOIN games ON in_cart.game_id = games.id
+        WHERE in_cart.user_id = ?;
+    '''
+    cursor.execute(query, (id,))
+    return cursor.fetchall()
+
 def is_game_in_library(connection,game_id = None,user_id = None):
     cursor = connection.cursor()
     query = '''
         SELECT * FROM in_library
+        WHERE game_id = ? AND user_id = ?;
+    '''
+    cursor.execute(query, (game_id,user_id))
+    return cursor.fetchone()
+
+def is_game_in_cart(connection,game_id = None,user_id = None):
+    cursor = connection.cursor()
+    query = '''
+        SELECT * FROM in_cart
+        WHERE game_id = ? AND user_id = ?;
+    '''
+    cursor.execute(query, (game_id,user_id))
+    return cursor.fetchone()
+
+
+
+def add_game_to_cart(connection,game_id = None,user_id = None):
+    cursor = connection.cursor()
+    query = '''
+        INSERT INTO in_cart (user_id,game_id) VALUES (?, ?)
+    '''
+    cursor.execute(query, (user_id,game_id))
+    return connection.commit()
+
+def is_game_in_cart(connection,game_id = None,user_id = None):
+    cursor = connection.cursor()
+    query = '''
+        SELECT * FROM in_cart
         WHERE game_id = ? AND user_id = ?;
     '''
     cursor.execute(query, (game_id,user_id))

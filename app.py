@@ -112,11 +112,11 @@ def add_to_cart(id):
 
     if session['email'] == "admin@gmail.com":
         return redirect(url_for('admin_add_game'))
+    
+    user = db.get_user(connection, session['email'])
 
-    if 'cart' not in session:
-        session['cart'] = []
-
-    session['cart'].append(game)
+    if not db.is_game_in_cart(connection,id,user["id"]):
+        db.add_game_to_cart(connection,id,user["id"])
 
     return redirect(url_for('game_page', id=game['id']))
 
@@ -128,8 +128,11 @@ def cart():
     else:
         return redirect(url_for('login'))
     user = db.get_user(connection, session['email'])
-
-    return render_template("cart.html", user=user, games=session['cart'])
+    games= db.get_user_cart(connection, user['id'])
+    total_price = 0
+    for game in games:
+        total_price += game['price']
+    return render_template("cart.html", user=user, games=games,total_price=total_price)
 
 @app.route('/game/<id>', methods=['GET', 'POST'])
 def game_page(id):
@@ -139,11 +142,11 @@ def game_page(id):
             return redirect(url_for('admin_add_game'))
     else:
         if game :
-            return render_template('game_page.html', game=game, user=None, in_library=db.is_game_in_library(connection))
+            return render_template('game_page.html', game=game, user=None, in_library=db.is_game_in_library(connection), in_cart=db.is_game_in_cart(connection))
         else :
             return "GAME NOT FOUND!", 404
     user = db.get_user(connection, session['email'])
-    return render_template('game_page.html',game=game,user=user, in_library=db.is_game_in_library(connection, game['id'], user['id']))
+    return render_template('game_page.html',game=game,user=user, in_library=db.is_game_in_library(connection, game['id'], user['id']), in_cart=db.is_game_in_cart(connection, game['id'], user['id']))
 
 @app.route('/logout')
 def logout():
