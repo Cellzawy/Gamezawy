@@ -235,6 +235,7 @@ def info():
 def search():
     if request.method == "POST" :
         query = request.form['search']
+        session['search_query'] = query
         games = db.search_games(connection, query)
     else:
         games = db.get_all_games(connection)
@@ -242,9 +243,9 @@ def search():
         if session['email'] == "admin@gmail.com":
             return redirect(url_for('admin_add_game'))
     else:
-        return render_template('search.html', user=None, games=games, query=query)
+        return render_template('search.html', user=None, games=games, query=session['search_query'])
     user = db.get_user(connection, session['email'])
-    return render_template('search.html',user=user, games=games, query=query)
+    return render_template('search.html',user=user, games=games, query=session['search_query'])
 
 @app.route('/add_game', methods=['GET', 'POST'])
 def admin_add_game():
