@@ -173,7 +173,6 @@ def is_game_in_cart(connection,game_id = None,user_id = None):
     return cursor.fetchone()
 
 
-
 def add_game_to_cart(connection,game_id = None,user_id = None):
     cursor = connection.cursor()
     query = '''
@@ -182,11 +181,50 @@ def add_game_to_cart(connection,game_id = None,user_id = None):
     cursor.execute(query, (user_id,game_id))
     return connection.commit()
 
-def is_game_in_cart(connection,game_id = None,user_id = None):
+def update_username(connection, email, new_name):
     cursor = connection.cursor()
-    query = '''
-        SELECT * FROM in_cart
-        WHERE game_id = ? AND user_id = ?;
-    '''
-    cursor.execute(query, (game_id,user_id))
-    return cursor.fetchone()
+    cursor.execute(
+        '''
+            UPDATE users
+            SET username = ?
+            WHERE email = ?
+        '''
+        , (new_name, email)
+    )
+    connection.commit()
+    
+def update_password(connection, email, new_password):
+    cursor = connection.cursor()
+    cursor.execute(
+        '''
+            UPDATE users
+            SET password = ?
+            WHERE email = ?
+        '''
+        , (utils.hash_password(new_password), email)
+    )
+    connection.commit() 
+    
+def update_credit_card(connection, email, new_cc):
+    cursor = connection.cursor()
+    cursor.execute(
+        '''
+            UPDATE users
+            SET credit_card = ?
+            WHERE email = ?
+        '''
+        , (new_cc, email)
+    )
+    connection.commit()
+    
+def update_pfp(connection, email, new_pfp):
+    cursor = connection.cursor()
+    cursor.execute(
+        '''
+            UPDATE users
+            SET img_path = ?
+            WHERE email = ?
+        '''
+        , (new_pfp, email)
+    )
+    connection.commit()

@@ -79,7 +79,7 @@
     <header class="header">
         <div class="container">
             <div class="row">
-                <div class="col-lg-3">
+                <div class="col-lg-2">
                     <div class="header__logo">
                         <a href="./index.html">
                             <h4>
@@ -88,7 +88,7 @@
                         </a>
                     </div>
                 </div>
-                <div class="col-lg-6">
+                <div class="col-lg-8">
                     <div class="header__nav">
                         <nav class="header__menu mobile-menu">
                             <ul>
@@ -109,7 +109,7 @@
                         </nav>
                     </div>
                 </div>
-                <div class="col-lg-3">
+                <div class="col-lg-2">
                     <div class="header__right">
                         <a href="#" class="search-switch"><span class="icon_search"></span></a>
                         <a href="./login.html"><span class="icon_profile"></span></a>
@@ -134,7 +134,37 @@
                     <h2>Username</h2>
                 </div>
                 <div class="profile-edit">
-                    <form action="/update-profile" method="post" enctype="multipart/form-data">
+                    <form action="/update-general" method="post" enctype="multipart/form-data">
+                        <h2>Update General Info</h2>
+
+                        <label for="username">Username:</label>
+                        <input type="username" id="username" name="username" placeholder="Your Username" value="">
+
+                        <label for="cc">Credit Card:</label>
+                        <input type="tel" id="creditcard" name="creditcard" placeholder="1234567890">
+
+                        <button type="submit">Update Profile</button>
+                    </form>
+                    <form action="/update-pfp" method="post" enctype="multipart/form-data">
+                        <h2>Update Profile Picture</h2>
+
+                        <label for="profilePicture">Profile Picture:</label>
+                        <input type="file" id="profilePicture" name="profilePicture" accept="image/*">
+                        <button type="submit">Update Profile</button>
+                    </form>
+                    <form action="/update-password" method="post" enctype="multipart/form-data">
+                        <h2>Update Password</h2>
+                        <label for="opassword">Current Password:</label>
+                        <input type="password" id="opassword" name="opassword" placeholder="Your old password" required>
+
+                        <label for="password">New Password:</label>
+                        <input type="password" id="password" name="password" placeholder="Your new password">
+
+                        <label for="cpassword">Confirm Password:</label>
+                        <input type="password" id="cpassword" name="cpassword" placeholder="Your new password">
+                        <button type="submit">Update Profile</button>
+                    </form>
+                    <!-- <form action="/update-profile" method="post" enctype="multipart/form-data">
                         <h2>Edit Profile</h2>
                         <label for="name">Name:</label>
                         <input type="text" id="name" name="name" placeholder="Your Current Name" value="Username"
@@ -148,19 +178,19 @@
                         <input type="password" id="opassword" name="opassword" placeholder="Your old password" required>
 
                         <label for="password">New Password:</label>
-                        <input type="password" id="password" name="password" placeholder="Your new password" required>
+                        <input type="password" id="password" name="password" placeholder="Your new password">
 
                         <label for="cpassword">Confirm Password:</label>
-                        <input type="password" id="cpassword" name="cpassword" placeholder="Your new password" required>
+                        <input type="password" id="cpassword" name="cpassword" placeholder="Your new password">
 
                         <label for="cc">Credit Card:</label>
-                        <input type="tel" id="phone" name="phone" placeholder="1234567890" required>
+                        <input type="tel" id="creditcard" name="creditcard" placeholder="1234567890" required>
 
                         <label for="profilePicture">Profile Picture:</label>
                         <input type="file" id="profilePicture" name="profilePicture" accept="image/*">
 
                         <button type="submit">Update Profile</button>
-                    </form>
+                    </form> -->
                 </div>
             </div>
         </div>

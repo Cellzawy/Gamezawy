@@ -1,3 +1,4 @@
+import os
 from flask import Flask, render_template, request, redirect, url_for, session, flash
 import db
 import utils
@@ -197,6 +198,48 @@ def admin_edit_game():
         return "Access Denied", 403
     games = db.get_all_games(connection)
     return render_template("admin-edit.html", games=games)
+
+@app.route('/update-general',  methods=['GET', 'POST'])
+def update_username():
+    if request.method == 'POST':
+        name = request.form['username']
+        creditcard  = request.form['creditcard']
+        if  db.get_user_by_username(connection, name): #unique const violation
+            flash("User already taken")
+            return redirect(url_for("info"))
+        if creditcard:
+            db.update_credit_card(connection=connection, email=session['email'], new_cc=creditcard)
+        if name:
+            db.update_username(connection=connection, email=session['email'], new_name=name)
+            
+    return redirect(url_for('info'))
+
+@app.route('/update-pfp',  methods=['GET', 'POST'])
+def update_pfp():
+    if request.method == 'POST':
+        image = request.files['profilePicture']
+        if image:
+            db.update_pfp(connection, session['email'], image.filename)
+            image.save(os.path.join('src/static/img/user', image.filename)) #works
+    return redirect(url_for('info'))
+
+@app.route('/update-password',  methods=['GET', 'POST'])
+def update_password():
+    if request.method == 'POST':
+        opassword = request.form['opassword']
+        password = request.form['password']
+        cpassword = request.form['cpassword']    
+        if utils.is_password_match(opassword, db.get_user(connection, session['email'])['password']):
+            if password == cpassword:
+                db.update_password(connection, session['email'], password)
+            else:
+                flash("Passwords Don't match")
+                redirect(url_for("info"))
+        else:
+            flash("Wrong Password")
+            redirect(url_for("info"))
+            
+    return redirect(url_for('info'))
 
 if __name__ == '__main__':
     db.init_db(connection)
