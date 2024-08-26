@@ -23,6 +23,11 @@
     <link rel="stylesheet" href="../static/css/owl.carousel.min.css" type="text/css">
     <link rel="stylesheet" href="../static/css/slicknav.min.css" type="text/css">
     <link rel="stylesheet" href="../static/css/style.css" type="text/css">
+    <style>
+        input {
+            text-align: center;
+        }
+    </style>
 </head>
 
 <body>
@@ -63,7 +68,7 @@
                     <div class="header__right">
                         {% if user: %}
                         <a href="{{ url_for('cart') }}"><i class="fa fa-shopping-cart"></i></a>
-                        <a href="#"><i class="fa fa-money"></i> {{ user['balance'] }}</a>
+                        <a href="{{ url_for('add_funds') }}"><i class="fa fa-money"></i> {{ user['balance'] }}</a>
                         {% endif %}
                         <a href=" #" class="search-switch"><span class="icon_search"></span></a>
                         {% if user: %}
@@ -144,7 +149,8 @@
                                 {% else: %}
                                 <a href="{{ url_for('add_to_cart', id=game['id']) }}" class="follow-btn"><i
                                         class="fa fa-shopping-cart"></i> Add to Cart</a>
-                                <a href="#" class="watch-btn"><span>Buy Now</span> <i class="fa fa-angle-right"></i></a>
+                                <a href="{{ url_for('buy', id=game['id']) }}" class="watch-btn"><span>Buy Now</span> <i
+                                        class="fa fa-angle-right"></i></a>
 
                                 {% endif %}
                             </div>

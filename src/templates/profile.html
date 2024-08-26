@@ -34,7 +34,6 @@
             margin: 20px 0;
         }
 
-        input[type="text"],
         input[type="password"],
         input[type="email"],
         input[type="tel"] {
@@ -124,40 +123,32 @@
     <header class="header">
         <div class="container">
             <div class="row">
-                <div class="col-lg-2">
+                <div class="col-lg-3">
                     <div class="header__logo">
-                        <a href="./index.html">
+                        <a href="{{ url_for('home') }}">
                             <h4>
                                 <span style="color: white;">Game</span><span style="color: #e53637;">zawy</span>
                             </h4>
                         </a>
                     </div>
                 </div>
-                <div class="col-lg-8">
+                <div class="col-lg-6">
                     <div class="header__nav">
                         <nav class="header__menu mobile-menu">
                             <ul>
-                                <li><a href="./index.html">Homepage</a></li>
-                                <li><a href="./categories.html">Categories <span class="arrow_carrot-down"></span></a>
-                                    <ul class="dropdown">
-                                        <li><a href="./categories.html">Categories</a></li>
-                                        <li><a href="./anime-details.html">Anime Details</a></li>
-                                        <li><a href="./anime-watching.html">Anime Watching</a></li>
-                                        <!-- <li><a href="./blog-details.html">Blog Details</a></li> -->
-                                        <li><a href="./signup.html">Sign Up</a></li>
-                                        <li><a href="./login.html">Login</a></li>
-                                    </ul>
-                                </li>
-                                <!-- <li><a href="./blog.html">Our Blog</a></li> -->
-                                <li><a href="#">Contacts</a></li>
+                                <li><a href="{{ url_for('home') }}">Homepage</a></li>
+                                <li><a href="{{ url_for('library') }}">Library</a></li>
+                                <li><a href="{{ url_for('logout') }}">Logout</a></li>
                             </ul>
                         </nav>
                     </div>
                 </div>
-                <div class="col-lg-2">
+                <div class="col-lg-3">
                     <div class="header__right">
+                        <a href="{{ url_for('cart') }}"><i class="fa fa-shopping-cart"></i></a>
+                        <a href="{{ url_for('add_funds') }}"><i class="fa fa-money"></i> {{ user['balance'] }}</a>
                         <a href="#" class="search-switch"><span class="icon_search"></span></a>
-                        <a href="./login.html"><span class="icon_profile"></span></a>
+                        <a href="{{ url_for('info') }}"><span class="icon_profile"></span></a>
                     </div>
                 </div>
             </div>
@@ -175,8 +166,14 @@
                 <div class="profile-info">
                     <div class="profile-pic"
                         style="display: flex; justify-content: center; align-items: center; width: 500px; height: 500px;">
+                        {% if user['img_path'] == "":%}
+                        <img style="width: 500px;"
+                            src="../static/img/user/blank-avatar-photo-place-holder-600nw-1095249842.webp"
+                            alt="Profile Picture">
+                        {% else %}
                         <img style="width: 500px;" src="{{ url_for('static',filename='img/user/' + user['img_path']) }}"
                             alt="Profile Picture">
+                        {% endif %}
                     </div>
                     <h2>{{user['username']}}</h2>
                 </div>
@@ -227,7 +224,7 @@
             <div class="row">
                 <div class="col-lg-3">
                     <div class="footer__logo">
-                        <a href="./index.html">
+                        <a href="{{ url_for('home') }}">
                             <h4>
                                 <span style="color: white;">Game</span><span style="color: #e53637;">zawy</span>
                             </h4>
@@ -237,10 +234,9 @@
                 <div class="col-lg-6">
                     <div class="footer__nav">
                         <ul>
-                            <li class="active"><a href="./index.html">Homepage</a></li>
-                            <li><a href="./categories.html">Categories</a></li>
-                            <!-- <li><a href="./blog.html">Our Blog</a></li> -->
-                            <li><a href="#">Contacts</a></li>
+                            <li><a href="{{ url_for('home') }}">Homepage</a></li>
+                            <li><a href="{{ url_for('library') }}">Library</a></li>
+                            <li><a href="{{ url_for('logout') }}">Logout</a></li>
                         </ul>
                     </div>
                 </div>
@@ -261,8 +257,8 @@
     <div class="search-model">
         <div class="h-100 d-flex align-items-center justify-content-center">
             <div class="search-close-switch"><i class="icon_close"></i></div>
-            <form class="search-model-form">
-                <input type="text" id="search-input" placeholder="Search here.....">
+            <form action="{{ url_for('search') }}" class="search-model-form" method="POST">
+                <input type="text" id="search-input" name="search" placeholder="Search here.....">
             </form>
         </div>
     </div>

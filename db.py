@@ -207,6 +207,25 @@ def add_games_to_library(connection,user_id,total_price,games):
         cursor.execute(query3, (user_id,game['id']))
     return connection.commit()
 
+def add_game_to_library(connection,user_id,total_price,game):
+    cursor = connection.cursor()
+    query = '''
+        INSERT INTO transactions (user_id,paid_amount) VALUES (?,?)
+    '''
+    cursor.execute(query, (user_id,total_price))
+    
+    transaction_id = cursor.lastrowid
+    query2 = '''
+        INSERT INTO transaction_items (transaction_id, game_id) VALUES (?,?)
+    '''
+    cursor.execute(query2, (transaction_id,game['id']))
+
+    query3 = '''
+        INSERT INTO in_library (user_id, game_id) VALUES (?,?)
+    '''
+    cursor.execute(query3, (user_id,game['id']))
+    return connection.commit()
+
 def remove_games_from_cart(connection,user_id):
     cursor = connection.cursor()
     query = '''
