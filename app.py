@@ -25,6 +25,32 @@ def home():
     user = db.get_user(connection, session['email'])
     return render_template('index.html', user=user, games=games)
 
+
+@app.route('/add-money', methods=['GET', 'POST'])
+def add_money():
+    games = db.get_all_games(connection)
+    if 'email' not in session:
+        return render_template('index.html', user=None, games=games)
+    user = db.get_user(connection, session['email'])
+    return render_template('add-money.html')
+
+@app.route('/add-funds', methods=['GET', 'POST'])
+def add_funds():
+    games = db.get_all_games(connection)
+    if 'email' not in session:
+        return render_template('index.html', user=None, games=games)
+    else:
+        if request.method == 'POST':
+            data = request.get_json()
+            user_email = session['email']
+            new_funds = data['amount']
+            print(data)
+            # db.update_user_funds(connection, user_email, new_funds)
+            return jsonify({'message': 'Funds updated successfully'})
+        else:
+            return render_template('add-money.html', message="Successfully added ")
+
+
 @app.route('/library', methods=['GET', 'POST'])
 def library():
     if "email" in session :
