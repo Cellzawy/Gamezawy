@@ -119,11 +119,12 @@
             <div class="game-view">
                 <div style="text-align: center;">
                     <img src="{{ url_for('static',filename='img/game/' + game['img_path']) }}" alt="{{game['name']}}"
-                        style="width: 200px;">
+                        style="width: 200px;" id="game_img">
                     <h2>{{game['id']}}</h2>
                 </div>
                 <div>
-                    <form id="game-info-form" method="post" action="/update-game-info">
+                    <form id="game-info-form" method="post" enctype=multipart/form-data>
+                        <input type="hidden" id="game-id" name="id" value="{{game['id']}}">
                         <label for="game-title">Title:</label>
                         <input type="text" id="game-title" name="title" value="{{game['name']}}">
                         <label for="game-genre">Genre:</label>
@@ -140,14 +141,38 @@
                             cols="50">{{game['description']}}</textarea><br><br>
                         <label for="img">Select image:</label>
                         <input type="file" id="img" name="img" accept="image/*">
-                        <button style="float: right; margin-left: 1rem; background-color: #e53637;">Delete</button>
+                        <div class="small text-muted mb-3">Image size not larger than 10 MB <br> Valid extentions (jpg,
+                            jpeg, png, gif)</div>
+                        {%if error_msg and game_id == game['id']%}
+                        <span style="display:block;color:#e53637;font-size: 20px;width: 100%;text-align:center;"><i
+                                class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+                            {{error_msg}}</span>
+                        {%endif%}
                         <button type="submit" style="float: right;">Save Changes</button>
                     </form>
+                    <a href="{{url_for('admin_remove_game', id=game['id'])}}">
+                        <button style="margin-top: 10px; top: -116px; left: 80%;background-color: #e53637;">Delete
+                        </button>
+                    </a>
                 </div>
             </div>
+
+            <script>
+                function previewImage(event) {
+                    var reader = new FileReader();
+                    reader.onload = function () {
+                        var output = document.getElementById('game_img-image');
+                        output.src = reader.result;
+                    }
+                    reader.readAsDataURL(event.target.files[0]);
+                }
+            </script>
             {%endfor%}
         </div>
     </section>
+
+
+
     <!-- Profile Section End -->
     <!-- Footer Section Begin -->
     <footer class="footer">

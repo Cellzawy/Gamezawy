@@ -229,7 +229,8 @@ def info():
             return redirect(url_for('admin_add_game'))
     else:
         return render_template('index.html', user=None, games=games)
-    return render_template("profile.html")
+    user = db.get_user(connection, session['email'])
+    return render_template("profile.html", user=user)
 
 @app.route('/search', methods=['GET', 'POST'])
 def search():
@@ -276,8 +277,51 @@ def admin_edit_game():
         return redirect(url_for('home'))
     if session['email'] != 'admin@gmail.com':
         return "Access Denied", 403
-    games = db.get_all_games(connection)
-    return render_template("admin-edit.html", games=games)
+    else:
+        games = db.get_all_games(connection)
+        if request.method == 'POST':
+            id = request.form['id']
+            name=request.form['title']
+            genre=request.form['genre']
+            price=request.form['price']
+            release_date=request.form['releaseDate']
+            developers=request.form['developer']
+            description=request.form['description']
+            photo=request.files['img']
+            integer_id=int(id)
+            game=db.get_game(connection,id)
+            if photo.filename != "":
+                if not utils.allowed_file_size(photo):
+                    return render_template("admin-edit.html", games=games,error_msg="Invalid image size",game_id=integer_id)
+                elif not utils.allowed_file(photo.filename) and photo.filename != "":
+                    return render_template("admin-edit.html", games=games,error_msg="Invalid image extention",game_id=integer_id)
+                db.edit_game(connection,name,price,description,genre,release_date,photo.filename,developers,id)
+                photo.save(os.path.join('src/static/img/game', photo.filename))
+            else:
+                if photo.filename == "" and (not photo):
+                    db.edit_game(connection,name,price,description,genre,release_date,game['img_path'],developers,id)
+                else:
+                    db.edit_game(connection,name,price,description,genre,release_date,photo.filename,developers,id)
+                    photo.save(os.path.join('src/static/img/game', photo.filename))
+        return render_template("admin-edit.html", games=games)
+
+
+@app.route('/remove_game/<id>', methods=['POST', 'GET'])
+def admin_remove_game(id):
+    if 'email' not in session:
+        return redirect(url_for('home'))
+
+    if session['email'] != 'admin@gmail.com':
+        return "Access Denied", 403
+
+    game = db.get_game(connection, id)
+    if game:
+        db.remove_game(connection, id)
+        return("Game removed successfully")
+    else:
+        return("Game not found")
+
+    return redirect(url_for('admin_edit_game'))
 
 
 @app.route('/update-general',  methods=['GET', 'POST'])

@@ -48,7 +48,7 @@ def is_email_valid(email):
         return False
 
 
-ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'webg'}
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'webp'}
 MAX_FILE_SIZE_BYTES = 10 * 1024 * 1024  # 10MB
 
 

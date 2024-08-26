@@ -233,7 +233,7 @@ def update_username(connection, email, new_name):
         '''
         , (new_name, email)
     )
-    connection.commit()
+    return connection.commit()
     
 def update_password(connection, email, new_password):
     cursor = connection.cursor()
@@ -245,7 +245,7 @@ def update_password(connection, email, new_password):
         '''
         , (utils.hash_password(new_password), email)
     )
-    connection.commit() 
+    return connection.commit() 
     
 def update_credit_card(connection, email, new_cc):
     cursor = connection.cursor()
@@ -257,7 +257,7 @@ def update_credit_card(connection, email, new_cc):
         '''
         , (new_cc, email)
     )
-    connection.commit()
+    return connection.commit()
     
 def update_pfp(connection, email, new_pfp):
     cursor = connection.cursor()
@@ -269,7 +269,7 @@ def update_pfp(connection, email, new_pfp):
         '''
         , (new_pfp, email)
     )
-    connection.commit()
+    return connection.commit()
 
 def add_game(connection,game_name,game_price,game_description,game_genres,game_release_date,game_img_path,game_developers):
     cursor = connection.cursor()
@@ -278,3 +278,21 @@ def add_game(connection,game_name,game_price,game_description,game_genres,game_r
         VALUES (?, ?, ?, ?, ?, ?, ?)
     ''', (game_name,game_price,game_description,game_genres,game_release_date,game_img_path,game_developers))
     return connection.commit()
+
+def remove_game(connection, game_id):
+    cursor = connection.cursor()
+    query = "DELETE FROM games WHERE id = ?"
+    cursor.execute(query, (game_id,))
+    return connection.commit()
+
+def edit_game(connection,name,price,description,genres,release_date,img_path,developers,id):
+    cursor = connection.cursor()
+    cursor.execute(
+        '''
+            UPDATE games
+            SET name = ?, price = ?,description = ? ,genres= ? ,release_date = ? ,img_path = ?,developers = ?
+            WHERE id = ?
+        '''
+        , (name,price,description,genres,release_date,img_path,developers,id)
+    )
+    connection.commit()
