@@ -362,16 +362,20 @@ def update_username():
         if name:
             db.update_username(connection=connection, email=session['email'], new_name=name)
             
-    return redirect(url_for('info'))
+    return redirect(url_for('login'))
 
 @app.route('/update-pfp',  methods=['GET', 'POST'])
 def update_pfp():
     if request.method == 'POST':
         image = request.files['profilePicture']
+        if not utils.allowed_file_size(image):
+            return 'invalid file size'
+        if not utils.allowed_file(image.filename):
+            return 'invalid file extension'
         if image:
             db.update_pfp(connection, session['email'], image.filename)
             image.save(os.path.join('src/static/img/user', image.filename)) #works
-    return redirect(url_for('info'))
+    return redirect(url_for('login'))
 
 @app.route('/update-password',  methods=['GET', 'POST'])
 def update_password():
@@ -389,7 +393,7 @@ def update_password():
             flash("Wrong Password")
             redirect(url_for("info"))
             
-    return redirect(url_for('info'))
+    return redirect(url_for('login'))
 
 
 if __name__ == '__main__':
