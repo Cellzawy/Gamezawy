@@ -99,6 +99,9 @@ def logout():
 @app.route('/info', methods=['GET', 'POST'])
 def info():
     if 'username' in session:
+        if session['error']:
+            flash(session['error'])
+            session['error'] = None
         return render_template('profile.html')
     else:
         return redirect(url_for("login"))
@@ -121,8 +124,11 @@ def update_username():
 @app.route('/update-pfp',  methods=['GET', 'POST'])
 def update_pfp():
     if request.method == 'POST':
-        image = request.files['profilePicture']
+        image = request.files['profilePicture']            
         if image:
+            if not utils.valid_image_extension(image.filename):
+                session['error'] = "Invalid extension"
+                return redirect(url_for('info'))
             db.update_pfp(connection, session['email'], image.filename)
             image.save(os.path.join('src/static/img/user', image.filename)) #works
     return redirect(url_for('info'))

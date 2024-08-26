@@ -46,3 +46,7 @@ def is_email_valid(email):
 
     else:
         return False
+
+def valid_image_extension(name):
+    allowed = ['png', 'jpg', 'jpeg', 'gif', 'svg']
+    return name.lower().rsplit(".")[-1] in allowed
