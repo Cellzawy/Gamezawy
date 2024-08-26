@@ -181,6 +181,14 @@ def add_game_to_cart(connection,game_id = None,user_id = None):
     cursor.execute(query, (user_id,game_id))
     return connection.commit()
 
+def remove_game_from_cart(connection,game_id = None,user_id = None):
+    cursor = connection.cursor()
+    query = '''
+        DELETE FROM in_cart WHERE user_id = ? AND game_id = ?
+    '''
+    cursor.execute(query, (user_id,game_id))
+    return connection.commit()
+
 def update_username(connection, email, new_name):
     cursor = connection.cursor()
     cursor.execute(

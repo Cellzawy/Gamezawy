@@ -1,5 +1,5 @@
 import os
-from flask import Flask, render_template, request, redirect, url_for, session, flash
+from flask import Flask, jsonify, render_template, request, redirect, url_for, session, flash
 import db
 import utils
 from flask_limiter import Limiter
@@ -132,7 +132,6 @@ def login():
 @app.route('/add_to_cart/<id>', methods=['GET', 'POST'])
 def add_to_cart(id):
     game = db.get_game(connection, id)
-    print("Retrieved game:", game)  # Debug print
 
     if "email" not in session:
         return redirect(url_for('login'))
@@ -144,6 +143,23 @@ def add_to_cart(id):
 
     if not db.is_game_in_cart(connection,id,user["id"]):
         db.add_game_to_cart(connection,id,user["id"])
+
+    return redirect(url_for('game_page', id=game['id']))
+
+@app.route('/remove_from_cart/<id>', methods=['GET', 'POST'])
+def remove_from_cart(id):
+    game = db.get_game(connection, id)
+
+    if "email" not in session:
+        return redirect(url_for('login'))
+
+    if session['email'] == "admin@gmail.com":
+        return redirect(url_for('admin_add_game'))
+    
+    user = db.get_user(connection, session['email'])
+
+    if db.is_game_in_cart(connection,id,user["id"]):
+        db.remove_game_from_cart(connection,id,user["id"])
 
     return redirect(url_for('game_page', id=game['id']))
 

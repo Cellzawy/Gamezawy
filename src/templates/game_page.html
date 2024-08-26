@@ -108,7 +108,6 @@
                         <div class="anime__details__text">
                             <div class="anime__details__title">
                                 <h3>{{game['name']}}</h3>
-                                <!-- <span>Grand Theft Auto 5</span> -->
                             </div>
                             <div class="anime__details__rating">
                                 <div class="rating">
@@ -140,6 +139,8 @@
                                 {% elif in_cart: %}
                                 <a href="" class="follow-btn"
                                     style="opacity: 0.5; cursor: default; pointer-events: none;"> in cart </i></a>
+                                <a href="{{ url_for('remove_from_cart', id=game['id']) }}" class="follow-btn"> remove
+                                    </i></a>
                                 {% else: %}
                                 <a href="{{ url_for('add_to_cart', id=game['id']) }}" class="follow-btn"><i
                                         class="fa fa-shopping-cart"></i> Add to Cart</a>
