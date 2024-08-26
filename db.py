@@ -270,3 +270,11 @@ def update_pfp(connection, email, new_pfp):
         , (new_pfp, email)
     )
     connection.commit()
+
+def add_game(connection,game_name,game_price,game_description,game_genres,game_release_date,game_img_path,game_developers):
+    cursor = connection.cursor()
+    cursor.execute('''
+        INSERT INTO games (name,price,description,genres,release_date,img_path,developers)
+        VALUES (?, ?, ?, ?, ?, ?, ?)
+    ''', (game_name,game_price,game_description,game_genres,game_release_date,game_img_path,game_developers))
+    return connection.commit()

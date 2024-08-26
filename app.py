@@ -102,8 +102,8 @@ def login():
             return redirect(url_for('home'))
     
     if request.method == 'POST':
-        email = request.form['email']
-        password = request.form['password']
+        email = (request.form['email'])
+        password = (request.form['password'])
 
         if not utils.is_email_valid(email) :
             return render_template('login.html',error_msg="Invalid Email")
@@ -234,7 +234,7 @@ def info():
 @app.route('/search', methods=['GET', 'POST'])
 def search():
     if request.method == "POST" :
-        query = request.form['search']
+        query = escape(request.form['search'])
         session['search_query'] = query
         games = db.search_games(connection, query)
     else:
@@ -253,6 +253,21 @@ def admin_add_game():
         return redirect(url_for('home'))
     if session['email'] != 'admin@gmail.com':
         return "Access Denied", 403
+    if request.method == "POST":
+        name = escape(request.form['title'])
+        genres = escape(request.form['genre'])
+        price = escape(request.form['price'])
+        releaseDate = escape(request.form['releaseDate'])
+        developers = escape(request.form['developer'])
+        description = escape(request.form['description'])
+        photo = request.files['img']
+        if not utils.allowed_file(photo.filename):
+            return render_template("admin-add.html", error_msg="invalid extension")
+        if not utils.allowed_file_size(photo):
+            return render_template("admin-add.html", error_msg="invalid img size")
+        db.add_game(connection, name, price, description, genres, releaseDate, photo.filename, developers)
+        photo.save(os.path.join('src/static/img/game', photo.filename))
+        return render_template("admin-add.html", error_msg="Game Added Successfully")
     return render_template("admin-add.html")
 
 @app.route('/edit_game', methods=['GET', 'POST'])
@@ -264,11 +279,12 @@ def admin_edit_game():
     games = db.get_all_games(connection)
     return render_template("admin-edit.html", games=games)
 
+
 @app.route('/update-general',  methods=['GET', 'POST'])
 def update_username():
     if request.method == 'POST':
-        name = request.form['username']
-        creditcard  = request.form['creditcard']
+        name = escape(request.form['username'])
+        creditcard  = escape(request.form['creditcard'])
         if  db.get_user_by_username(connection, name): #unique const violation
             flash("User already taken")
             return redirect(url_for("info"))
@@ -291,9 +307,9 @@ def update_pfp():
 @app.route('/update-password',  methods=['GET', 'POST'])
 def update_password():
     if request.method == 'POST':
-        opassword = request.form['opassword']
-        password = request.form['password']
-        cpassword = request.form['cpassword']    
+        opassword = escape(request.form['opassword'])
+        password = escape(request.form['password'])
+        cpassword = escape(request.form['cpassword'])    
         if utils.is_password_match(opassword, db.get_user(connection, session['email'])['password']):
             if password == cpassword:
                 db.update_password(connection, session['email'], password)
@@ -305,6 +321,7 @@ def update_password():
             redirect(url_for("info"))
             
     return redirect(url_for('info'))
+
 
 if __name__ == '__main__':
     db.init_db(connection)
