@@ -27,13 +27,14 @@ def home():
     return render_template('index.html', user=user, games=games)
 
 
+prices = [5, 10, 25, 50, 100]
 @app.route('/add-money', methods=['GET', 'POST'])
 def add_money():
     games = db.get_all_games(connection)
     if 'email' not in session:
         return render_template('index.html', user=None, games=games)
     user = db.get_user(connection, session['email'])
-    return render_template('add-money.html')
+    return render_template('add-money.html', price1=prices[0], price2=prices[1] ,price3=prices[2], price4=prices[3], price5=prices[4],)
 
 @app.route('/add-funds', methods=['GET', 'POST'])
 def add_funds():
@@ -45,9 +46,10 @@ def add_funds():
             data = request.get_json()
             user_email = session['email']
             new_funds = data['amount']
+            user = db.get_user(connection, user_email)
             print(data)
-            # db.update_user_funds(connection, user_email, new_funds)
-            return jsonify({'message': 'Funds updated successfully'})
+            db.update_user_balance(connection, user['id'], -int(new_funds))
+            return jsonify({'message': 'Successfully added ' + new_funds + '$ to your balance.'})
         else:
             return render_template('add-money.html', message="Successfully added ")
 
@@ -223,13 +225,16 @@ def game_page(id):
     if "email" in session :
         if session['email'] == "admin@gmail.com":
             return redirect(url_for('admin_add_game'))
-    else:
         if game :
+            return render_template('game_page.html',game=game,user=user, in_library=db.is_game_in_library(connection, game['id'], user['id']), in_cart=db.is_game_in_cart(connection, game['id'], user['id']))
+        else :
+            return "GAME NOT FOUND!", 404
+    else :
+        if game :
+            user = db.get_user(connection, session['email'])
             return render_template('game_page.html', game=game, user=None, in_library=db.is_game_in_library(connection), in_cart=db.is_game_in_cart(connection))
         else :
             return "GAME NOT FOUND!", 404
-    user = db.get_user(connection, session['email'])
-    return render_template('game_page.html',game=game,user=user, in_library=db.is_game_in_library(connection, game['id'], user['id']), in_cart=db.is_game_in_cart(connection, game['id'], user['id']))
 
 @app.route('/logout')
 def logout():
@@ -258,6 +263,7 @@ def search():
         games = db.search_games(connection, query)
     else:
         games = db.get_all_games(connection)
+        session['search_query'] = ""
     if "email" in session :
         if session['email'] == "admin@gmail.com":
             return redirect(url_for('admin_add_game'))
@@ -347,7 +353,8 @@ def update_username():
     if request.method == 'POST':
         name = escape(request.form['username'])
         creditcard  = escape(request.form['creditcard'])
-        if  db.get_user_by_username(connection, name): #unique const violation
+        user = db.get_user(connection,session['email'])
+        if db.get_user_by_username(connection, name) and user['username'] != name: #unique const violation
             flash("User already taken")
             return redirect(url_for("info"))
         if creditcard:

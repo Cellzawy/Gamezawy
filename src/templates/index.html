@@ -70,7 +70,8 @@
                     <div class="header__right">
                         {% if user: %}
                         <a href="{{ url_for('cart') }}"><i class="fa fa-shopping-cart"></i></a>
-                        <a href="{{ url_for('add_funds') }}"><i class="fa fa-money"></i> {{ user['balance'] }}</a>
+                        <a href="{{ url_for('add_funds') }}"><i class="fa fa-money"></i> {{ user['balance'] |
+                            round(2)}}</a>
                         {% endif %}
                         <a href="#" class="search-switch"><span class="icon_search"></span></a>
                         {% if user: %}
@@ -172,12 +173,13 @@
                             </div>
                             <div class="col-lg-4 col-md-4 col-sm-4">
                                 <div class="btn__all">
-                                    <a href="#" class="primary-btn">View All <span class="arrow_right"></span></a>
+                                    <a href="{{url_for('search')}}" class="primary-btn">View All <span
+                                            class="arrow_right"></span></a>
                                 </div>
                             </div>
                         </div>
                         <div class="row">
-                            {%for game in games[9:15]:%}
+                            {%for game in games[-6:]:%}
                             <div class="col-lg-4 col-md-6 col-sm-6">
                                 <div class="product__item">
                                     <a href="{{ url_for('game_page', id=game['id']) }}">
@@ -208,7 +210,7 @@
                                 <h5>Top Views</h5>
                             </div>
                             <div class="filter__gallery">
-                                {%for game in games[15:]:%}
+                                {%for game in games[15:20]:%}
                                 <div class="product__sidebar__view__item set-bg mix day years"
                                     data-setbg="{{ url_for('static',filename='img/game/' + game['img_path']) }}">
                                     <h5><a href="{{ url_for('game_page', id=game['id']) }}">{{ game['name'] }}</a></h5>
