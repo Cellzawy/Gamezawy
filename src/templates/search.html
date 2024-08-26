@@ -51,8 +51,6 @@
                                 <li><a href="{{ url_for('home') }}">Homepage</a></li>
                                 {% if user: %}
                                 <li class="active"><a href="{{ url_for('library') }}">Library</a></li>
-                                {% else: %}
-                                <li><a href="{{ url_for('categories') }}">Categories</a></li>
                                 {% endif %}
                                 {% if user: %}
                                 <li><a href="{{ url_for('logout') }}">Logout</a></li>
@@ -164,7 +162,6 @@
                     <div class="footer__nav">
                         <ul>
                             <li class="active"><a href="{{ url_for('home') }}">Homepage</a></li>
-                            <li><a href="{{ url_for('categories') }}">Categories</a></li>
                             {% if user: %}
                             <li><a href="{{ url_for('logout') }}">Logout</a></li>
                             {% else: %}
