@@ -189,6 +189,40 @@ def remove_game_from_cart(connection,game_id = None,user_id = None):
     cursor.execute(query, (user_id,game_id))
     return connection.commit()
 
+def add_games_to_library(connection,user_id,total_price,games):
+    cursor = connection.cursor()
+    query = '''
+        INSERT INTO transactions (user_id,paid_amount) VALUES (?,?)
+    '''
+    cursor.execute(query, (user_id,total_price))
+    transaction_id = cursor.lastrowid
+    for game in games:
+        query2 = '''
+            INSERT INTO transaction_items (transaction_id, game_id) VALUES (?,?)
+        '''
+        cursor.execute(query2, (transaction_id,game['id']))
+        query3 = '''
+            INSERT INTO in_library (user_id, game_id) VALUES (?,?)
+        '''
+        cursor.execute(query3, (user_id,game['id']))
+    return connection.commit()
+
+def remove_games_from_cart(connection,user_id):
+    cursor = connection.cursor()
+    query = '''
+        DELETE FROM in_cart WHERE user_id = ?
+    '''
+    cursor.execute(query, (user_id,))
+    return connection.commit()
+
+def update_user_balance(connection,user_id,total_price):
+    cursor = connection.cursor()
+    query = '''
+        UPDATE users SET balance = balance - ? WHERE id = ?;
+    '''
+    cursor.execute(query, (total_price,user_id))
+    return connection.commit()
+
 def update_username(connection, email, new_name):
     cursor = connection.cursor()
     cursor.execute(

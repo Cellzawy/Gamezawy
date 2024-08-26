@@ -112,7 +112,8 @@ ol {
   margin-bottom: 30px;
 
   h4,
-  h5 {
+  h5,
+  h2 {
     color: $white-color;
     font-weight: 600;
     line-height: 21px;
@@ -135,7 +136,7 @@ ol {
 
 .set-bg {
   background-repeat: no-repeat;
-  // background-size: cover;
+  background-size: cover;
   background-position: top center;
 }
 

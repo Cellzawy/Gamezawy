@@ -175,7 +175,29 @@ def cart():
     total_price = 0
     for game in games:
         total_price += game['price']
-    return render_template("cart.html", user=user, games=games,total_price=total_price)
+    return render_template("cart.html", user=user, games=games,total_price=round(total_price, 2))
+
+@app.route('/checkout', methods=['GET', 'POST'])
+def checkout():
+    if "email" not in session:
+        return redirect(url_for('login'))
+
+    if session['email'] == "admin@gmail.com":
+        return redirect(url_for('admin_add_game'))
+    user = db.get_user(connection, session['email'])
+    games= db.get_user_cart(connection, user['id'])
+
+    total_price = 0
+    for game in games:
+        total_price += game['price']
+
+    if(user['balance'] >= total_price) :
+        db.add_games_to_library(connection,user['id'],total_price,games)
+        db.remove_games_from_cart(connection,user['id'])
+        db.update_user_balance(connection,user['id'],total_price)
+    else:
+        return render_template("cart.html", user=user, games=games,total_price=round(total_price, 2))
+    return redirect(url_for('library'))
 
 @app.route('/game/<id>', methods=['GET', 'POST'])
 def game_page(id):

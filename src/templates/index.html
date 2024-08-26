@@ -87,20 +87,30 @@
         <div class="container">
             <div class="hero__slider owl-carousel">
                 {%for game in games[:3]:%}
-                <div class="hero__items set-bg"
-                    data-setbg="{{ url_for('static',filename='img/game/' + game['img_path']) }}">
-                    <div class="row">
-                        <div class="col-lg-6">
-                            <div class="hero__text">
-                                <div class="label">{{ game['genres'].split(',',1)[0] }}</div>
-                                <h2>{{ game['name'] }}</h2>
-                                <p>{{ game['description'] }}</p>
-                                <a href="{{ url_for('game_page', id=game['id']) }}"><span>View</span> <i
-                                        class="fa fa-angle-right"></i></a>
+                <a href="{{ url_for('game_page', id=game['id']) }}">
+                    <div class="hero__items set-bg"
+                        data-setbg="{{ url_for('static',filename='img/game/' + game['img_path']) }}">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="hero__text">
+                                    <div class="label">{{ game['genres'].split(',',1)[0] }}</div>
+                                    <h2>{{ game['name'] }}</h2>
+                                    <p>{{ game['description'] }}</p>
+                                    <div style="font-size: 13px;
+                                    color: #ffffff;
+                                    background: #e53637;
+                                    display: inline-block;
+                                    font-weight: 700;
+                                    letter-spacing: 2px;
+                                    text-transform: uppercase;
+                                    padding: 14px 20px;
+                                    border-radius: 4px 0 0 4px;
+                                    margin-right: 1px;"><span>View</span> <i class="fa fa-angle-right"></i></div>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                </a>
                 {%endfor%}
             </div>
         </div>
@@ -121,7 +131,7 @@
                             </div>
                             <div class="col-lg-4 col-md-4 col-sm-4">
                                 <div class="btn__all">
-                                    <a href="#" class="primary-btn">View All <span class="arrow_right"></span></a>
+                                    <a href="#" class="primary-btn">View All<span class="arrow_right"></span></a>
                                 </div>
                             </div>
                         </div>
@@ -129,9 +139,11 @@
                             {%for game in games[3:9]:%}
                             <div class="col-lg-4 col-md-6 col-sm-6">
                                 <div class="product__item">
-                                    <div class="product__item__pic set-bg"
-                                        data-setbg="{{ url_for('static',filename='img/game/' + game['img_path']) }}">
-                                    </div>
+                                    <a href="{{ url_for('game_page', id=game['id']) }}">
+                                        <div class="product__item__pic set-bg"
+                                            data-setbg="{{ url_for('static',filename='img/game/' + game['img_path']) }}">
+                                        </div>
+                                    </a>
                                     <div class="product__item__text">
                                         <ul>
                                             <li>{{ game['genres'].split(',',1)[0] }}</li>
@@ -164,9 +176,11 @@
                             {%for game in games[9:15]:%}
                             <div class="col-lg-4 col-md-6 col-sm-6">
                                 <div class="product__item">
-                                    <div class="product__item__pic set-bg"
-                                        data-setbg="{{ url_for('static',filename='img/game/' + game['img_path']) }}">
-                                    </div>
+                                    <a href="{{ url_for('game_page', id=game['id']) }}">
+                                        <div class="product__item__pic set-bg"
+                                            data-setbg="{{ url_for('static',filename='img/game/' + game['img_path']) }}">
+                                        </div>
+                                    </a>
                                     <div class="product__item__text">
                                         <ul>
                                             <li>{{ game['genres'].split(',',1)[0] }}</li>
