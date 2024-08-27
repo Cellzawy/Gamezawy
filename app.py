@@ -102,8 +102,8 @@ def login():
     if request.method == 'POST':
         @limiter.limit("3 per minute")
         def login_post():
-            email = (request.form['email'])
-            password = (request.form['password'])
+            email = request.form['email']
+            password = request.form['password']
 
             if not utils.is_email_valid(email) :
                 return render_template('login.html',error_msg="Invalid Email")
@@ -380,7 +380,7 @@ def update_password():
     if request.method == 'POST':
         opassword = escape(request.form['opassword'])
         password = escape(request.form['password'])
-        cpassword = escape(request.form['cpassword'])    
+        cpassword = escape(request.form['cpassword'])  
         if utils.is_password_match(opassword, db.get_user(connection, session['email'])['password']):
             if password == cpassword:
                 if utils.is_strong_password(password):
