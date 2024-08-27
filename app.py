@@ -226,6 +226,7 @@ def game_page(id):
         if session['email'] == "admin@gmail.com":
             return redirect(url_for('admin_add_game'))
         if game :
+            user = db.get_user(connection, session['email'])
             return render_template('game_page.html',game=game,user=user, in_library=db.is_game_in_library(connection, game['id'], user['id']), in_cart=db.is_game_in_cart(connection, game['id'], user['id']))
         else :
             return "GAME NOT FOUND!", 404
