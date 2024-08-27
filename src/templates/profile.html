@@ -191,6 +191,17 @@
                             value="{{user['credit_card']}}">
 
                         <button type="submit">Update General Info</button>
+                        <br>
+                        {%if error_msg == "Invalid Credit Card" or error_msg == "Username Is Taken":%}
+                        <span style="display:block;color:#e53637;font-size: 20px;width: 100%;text-align:center;"><i
+                                class="fa fa-exclamation-triangle" aria-hidden="true"></i>{{error_msg}}
+                        </span>
+                        {%elif error_msg == "Data Updated Successfully":%}
+                        <span
+                            style="display:block;color:rgb(90, 217, 90);font-size: 20px;width: 100%;text-align:center;"><i
+                                class="fa fa-check" style="color: #5ad95a;"></i> {{error_msg}}
+                        </span>
+                        {%endif%}
                     </form>
                     <form action="/update-pfp" method="post" enctype="multipart/form-data">
                         <h2>Update Profile Picture</h2>
@@ -198,6 +209,17 @@
                         <label for="profilePicture">Profile Picture:</label>
                         <input type="file" id="profilePicture" name="profilePicture" accept="image/*">
                         <button type="submit">Update Profile Picture</button>
+                        <br>
+                        {%if error_msg == "File Type Not Allowed" or error_msg == "Invalid File Size":%}
+                        <span style="display:block;color:#e53637;font-size: 20px;width: 100%;text-align:center;"><i
+                                class="fa fa-exclamation-triangle" aria-hidden="true"></i>{{error_msg}}
+                        </span>
+                        {%elif error_msg == "Profile Picture Updated Successfully":%}
+                        <span
+                            style="display:block;color:rgb(90, 217, 90);font-size: 20px;width: 100%;text-align:center;"><i
+                                class="fa fa-check" style="color: #5ad95a;"></i> {{error_msg}}
+                        </span>
+                        {%endif%}
                     </form>
                     <form action="/update-password" method="post" enctype="multipart/form-data">
                         <h2>Update Password</h2>
@@ -210,6 +232,18 @@
                         <label for="cpassword">Confirm Password:</label>
                         <input type="password" id="cpassword" name="cpassword" placeholder="Your new password">
                         <button type="submit">Update Password</button>
+                        <br>
+                        {%if error_msg == "Old Password Is Incorrect" or error_msg == "Passwords Do Not Match" or
+                        error_msg == "Password Does Not Meet Requirements":%}
+                        <span style="display:block;color:#e53637;font-size: 20px;width: 100%;text-align:center;"><i
+                                class="fa fa-exclamation-triangle" aria-hidden="true"></i>{{error_msg}}
+                        </span>
+                        {%elif error_msg == "Password Updated Successfully":%}
+                        <span
+                            style="display:block;color:rgb(90, 217, 90);font-size: 20px;width: 100%;text-align:center;"><i
+                                class="fa fa-check" style="color: #5ad95a;"></i> {{error_msg}}
+                        </span>
+                        {%endif%}
                     </form>
                 </div>
             </div>

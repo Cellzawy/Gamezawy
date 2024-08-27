@@ -136,7 +136,8 @@
                             </div>
                             <div class="col-lg-4 col-md-4 col-sm-4">
                                 <div class="btn__all">
-                                    <a href="#" class="primary-btn">View All<span class="arrow_right"></span></a>
+                                    <a href="{{url_for('search')}}" class="primary-btn">View All<span
+                                            class="arrow_right"></span></a>
                                 </div>
                             </div>
                         </div>
@@ -246,8 +247,8 @@
                     <div class="footer__nav">
                         <ul>
                             <li class="active"><a href="{{ url_for('home') }}">Homepage</a></li>
-                            <li class="active"><a href="{{ url_for('library') }}">Library</a></li>
                             {% if user: %}
+                            <li class="active"><a href="{{ url_for('library') }}">Library</a></li>
                             <li><a href="{{ url_for('logout') }}">Logout</a></li>
                             {% else: %}
                             <li><a href="{{ url_for('login') }}">Login</a></li>

@@ -47,6 +47,9 @@ def is_email_valid(email):
     else:
         return False
 
+def is_credit_card_valid(credit_card):
+    return re.fullmatch(r'^\d{4}-\d{4}-\d{4}-\d{4}$', credit_card)
+
 
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'webp'}
 MAX_FILE_SIZE_BYTES = 10 * 1024 * 1024  # 10MB

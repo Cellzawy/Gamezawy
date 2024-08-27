@@ -159,6 +159,12 @@
                                 <a href="{{url_for('checkout')}}" class="watch-btn"><span>Checkout</span> <i
                                         class="fa fa-angle-right"></i></a>
                                 {% endif %}
+                                <br>
+                                <br>
+                                <span
+                                    style="display:block;color:#e53637;font-size: 20px;width: 100%;text-align:center;">{%if
+                                    error_msg:%}<i class="fa fa-exclamation-triangle" aria-hidden="true"></i>{%endif%}
+                                    {{error_msg}}</span>
                             </div>
                         </div>
                     </div>

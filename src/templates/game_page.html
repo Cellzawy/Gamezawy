@@ -54,8 +54,8 @@
                         <nav class="header__menu mobile-menu">
                             <ul>
                                 <li><a href="{{ url_for('home') }}">Homepage</a></li>
-                                <li><a href="{{ url_for('library') }}">Library</a></li>
                                 {% if user: %}
+                                <li><a href="{{ url_for('library') }}">Library</a></li>
                                 <li><a href="{{ url_for('logout') }}">Logout</a></li>
                                 {% else: %}
                                 <li><a href="{{ url_for('login') }}">Login</a></li>
@@ -133,11 +133,18 @@
                                             <li><span>Developers :</span>{{ game['developers'] }}</li>
                                             <li><span>Release Date :</span>{{ game['release_date'] }}</li>
                                             <li><span>Genres :</span>{{ game['genres'] }}</li>
+                                            <span
+                                                style="margin-top: 20px; display:block;color:#e53637;font-size: 20px;width: 350px;text-align:center;">{%if
+                                                error_msg:%}<i class="fa fa-exclamation-triangle"
+                                                    aria-hidden="true"></i>{%endif%}
+                                                {{error_msg}}</span>
                                         </ul>
                                     </div>
+
                                 </div>
                             </div>
                             <div class="anime__details__btn">
+
                                 {% if in_library %}
                                 <a href="" class="follow-btn"
                                     style="opacity: 0.5; cursor: default; pointer-events: none;">Already in
@@ -152,7 +159,6 @@
                                         class="fa fa-shopping-cart"></i> Add to Cart</a>
                                 <a href="{{ url_for('buy', id=game['id']) }}" class="watch-btn"><span>Buy Now</span> <i
                                         class="fa fa-angle-right"></i></a>
-
                                 {% endif %}
                             </div>
                         </div>
@@ -183,8 +189,8 @@
                     <div class="footer__nav">
                         <ul>
                             <li><a href="./index.html">Homepage</a></li>
-                            <li><a href="{{ url_for('library') }}">Library</a></li>
                             {% if user: %}
+                            <li><a href="{{ url_for('library') }}">Library</a></li>
                             <li><a href="{{ url_for('logout') }}">Logout</a></li>
                             {% else: %}
                             <li><a href="{{ url_for('login') }}">Login</a></li>

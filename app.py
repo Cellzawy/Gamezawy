@@ -15,8 +15,6 @@ app.config['SESSION_COOKIE_HTTPONLY'] = False
 
 @app.route('/', methods=['GET', 'POST'])
 def home():
-    if not 'cart' in session :
-        session['cart'] = []
     games = db.get_all_games(connection)
     if "email" in session :
         if session['email'] == "admin@gmail.com":
@@ -33,7 +31,6 @@ def add_money():
     games = db.get_all_games(connection)
     if 'email' not in session:
         return render_template('index.html', user=None, games=games)
-    user = db.get_user(connection, session['email'])
     return render_template('add-money.html', price1=prices[0], price2=prices[1] ,price3=prices[2], price4=prices[3], price5=prices[4],)
 
 @app.route('/add-funds', methods=['GET', 'POST'])
@@ -51,7 +48,7 @@ def add_funds():
             db.update_user_balance(connection, user['id'], -int(new_funds))
             return jsonify({'message': 'Successfully added ' + new_funds + '$ to your balance.'})
         else:
-            return render_template('add-money.html', message="Successfully added ")
+            return render_template('add-money.html', message="Successfully added")
 
 
 @app.route('/library', methods=['GET', 'POST'])
@@ -95,7 +92,6 @@ def signup():
     return render_template('signup.html',error_msg="")
 
 @app.route('/login', methods=['GET', 'POST'])
-@limiter.limit("3 per minute")
 def login():
     if "email" in session :
         if session['email'] == "admin@gmail.com":
@@ -104,31 +100,33 @@ def login():
             return redirect(url_for('home'))
     
     if request.method == 'POST':
-        email = (request.form['email'])
-        password = (request.form['password'])
+        @limiter.limit("3 per minute")
+        def login_post():
+            email = (request.form['email'])
+            password = (request.form['password'])
 
-        if not utils.is_email_valid(email) :
-            return render_template('login.html',error_msg="Invalid Email")
+            if not utils.is_email_valid(email) :
+                return render_template('login.html',error_msg="Invalid Email")
 
-        user = db.get_user(connection, email)
-        if user: 
-            if user["email"] == "admin@gmail.com" and utils.is_password_match(password ,user["password"]) :
-                session['username'] = user["username"]
-                session['email'] = user["email"]
-                return redirect(url_for('admin_add_game'))
+            user = db.get_user(connection, email)
+            if user: 
+                if user["email"] == "admin@gmail.com" and utils.is_password_match(password ,user["password"]) :
+                    session['username'] = user["username"]
+                    session['email'] = user["email"]
+                    return redirect(url_for('admin_add_game'))
 
-        if user:
-            if utils.is_password_match(password, user['password']):
-                session['username'] = user['username']
-                session['email'] = user['email']
-                session['user_id'] = user['id']
-                return redirect(url_for("home"))
+            if user:
+                if utils.is_password_match(password, user['password']):
+                    session['username'] = user['username']
+                    session['email'] = user['email']
+                    session['user_id'] = user['id']
+                    return redirect(url_for("home"))
+                else:
+                    return render_template('login.html',error_msg="Invalid Password or Email")
+
             else:
                 return render_template('login.html',error_msg="Invalid Password or Email")
-
-        else:
-            return render_template('login.html',error_msg="Invalid Password or Email")
-
+        return login_post()
     return render_template('login.html',error_msg="")
 
 @app.route('/add_to_cart/<id>', methods=['GET', 'POST'])
@@ -198,10 +196,10 @@ def checkout():
         db.remove_games_from_cart(connection,user['id'])
         db.update_user_balance(connection,user['id'],total_price)
     else:
-        return render_template("cart.html", user=user, games=games,total_price=round(total_price, 2))
+        return render_template("cart.html", user=user, games=games,total_price=round(total_price, 2),error_msg="not enough balance")
     return redirect(url_for('library'))
 
-@app.route('/buy<id>', methods=['GET', 'POST'])
+@app.route('/buy/<id>', methods=['GET', 'POST'])
 def buy(id):
     if "email" not in session:
         return redirect(url_for('login'))
@@ -216,7 +214,7 @@ def buy(id):
         db.add_game_to_library(connection, user['id'], game['price'], game)
         db.update_user_balance(connection,user['id'],game['price'])
     else:
-        return render_template('game_page.html',game=game,user=user, in_library=db.is_game_in_library(connection, game['id'], user['id']), in_cart=db.is_game_in_cart(connection, game['id'], user['id']))
+        return render_template('game_page.html',game=game,user=user, in_library=db.is_game_in_library(connection, game['id'], user['id']), in_cart=db.is_game_in_cart(connection, game['id'], user['id']),error_msg="Not Enough Balance")
     return redirect(url_for('library'))
 
 @app.route('/game/<id>', methods=['GET', 'POST'])
@@ -232,7 +230,6 @@ def game_page(id):
             return "GAME NOT FOUND!", 404
     else :
         if game :
-            user = db.get_user(connection, session['email'])
             return render_template('game_page.html', game=game, user=None, in_library=db.is_game_in_library(connection), in_cart=db.is_game_in_cart(connection))
         else :
             return "GAME NOT FOUND!", 404
@@ -305,29 +302,28 @@ def admin_edit_game():
     else:
         games = db.get_all_games(connection)
         if request.method == 'POST':
-            id = request.form['id']
-            name=request.form['title']
-            genre=request.form['genre']
-            price=request.form['price']
-            release_date=request.form['releaseDate']
-            developers=request.form['developer']
-            description=request.form['description']
+            id = escape(request.form['id'])
+            name=escape(request.form['title'])
+            genre=escape(request.form['genre'])
+            price=escape(request.form['price'])
+            release_date=escape(request.form['releaseDate'])
+            developers=escape(request.form['developer'])
+            description=escape(request.form['description'])
             photo=request.files['img']
             integer_id=int(id)
             game=db.get_game(connection,id)
-            if photo.filename != "":
-                if not utils.allowed_file_size(photo):
-                    return render_template("admin-edit.html", games=games,error_msg="Invalid image size",game_id=integer_id)
-                elif not utils.allowed_file(photo.filename) and photo.filename != "":
-                    return render_template("admin-edit.html", games=games,error_msg="Invalid image extention",game_id=integer_id)
-                db.edit_game(connection,name,price,description,genre,release_date,photo.filename,developers,id)
-                photo.save(os.path.join('src/static/img/game', photo.filename))
+            if photo.filename == "":
+                db.edit_game(connection,name,price,description,genre,release_date,game['img_path'],developers,id)
+                return redirect(url_for('admin_edit_game'))
             else:
-                if photo.filename == "" and (not photo):
-                    db.edit_game(connection,name,price,description,genre,release_date,game['img_path'],developers,id)
+                if not utils.allowed_file_size(photo):
+                    return render_template("admin-edit.html", games=games,error_msg="Invalid Image Size",game_id=integer_id)
+                elif not utils.allowed_file(photo.filename):
+                    return render_template("admin-edit.html", games=games,error_msg="Invalid Image Extension",game_id=integer_id)
                 else:
                     db.edit_game(connection,name,price,description,genre,release_date,photo.filename,developers,id)
                     photo.save(os.path.join('src/static/img/game', photo.filename))
+                    return redirect(url_for('admin_edit_game'))
         return render_template("admin-edit.html", games=games)
 
 
@@ -342,11 +338,10 @@ def admin_remove_game(id):
     game = db.get_game(connection, id)
     if game:
         db.remove_game(connection, id)
-        return("Game removed successfully")
+        return redirect(url_for('admin_edit_game'))
     else:
         return("Game not found")
 
-    return redirect(url_for('admin_edit_game'))
 
 
 @app.route('/update-general',  methods=['GET', 'POST'])
@@ -356,13 +351,14 @@ def update_username():
         creditcard  = escape(request.form['creditcard'])
         user = db.get_user(connection,session['email'])
         if db.get_user_by_username(connection, name) and user['username'] != name: #unique const violation
-            flash("User already taken")
-            return redirect(url_for("info"))
-        if creditcard:
+            return render_template("profile.html", user=user, error_msg="Username Is Taken")
+        if creditcard and utils.is_credit_card_valid(creditcard):
             db.update_credit_card(connection=connection, email=session['email'], new_cc=creditcard)
+        else :
+            return render_template("profile.html", user=user, error_msg="Invalid Credit Card")
         if name:
             db.update_username(connection=connection, email=session['email'], new_name=name)
-            
+        return render_template("profile.html", user=user, error_msg="Data Updated Successfully")
     return redirect(url_for('login'))
 
 @app.route('/update-pfp',  methods=['GET', 'POST'])
@@ -370,12 +366,13 @@ def update_pfp():
     if request.method == 'POST':
         image = request.files['profilePicture']
         if not utils.allowed_file_size(image):
-            return 'invalid file size'
+            return render_template("profile.html", user=db.get_user(connection,session['email']), error_msg="Invalid File Size")
         if not utils.allowed_file(image.filename):
-            return 'invalid file extension'
+            return render_template("profile.html", user=db.get_user(connection,session['email']), error_msg="File Type Not Allowed")
         if image:
             db.update_pfp(connection, session['email'], image.filename)
             image.save(os.path.join('src/static/img/user', image.filename)) #works
+            return render_template("profile.html", user=db.get_user(connection,session['email']), error_msg="Profile Picture Updated Successfully")
     return redirect(url_for('login'))
 
 @app.route('/update-password',  methods=['GET', 'POST'])
@@ -386,14 +383,15 @@ def update_password():
         cpassword = escape(request.form['cpassword'])    
         if utils.is_password_match(opassword, db.get_user(connection, session['email'])['password']):
             if password == cpassword:
-                db.update_password(connection, session['email'], password)
+                if utils.is_strong_password(password):
+                    db.update_password(connection, session['email'], password)
+                    return render_template("profile.html", user=db.get_user(connection,session['email']), error_msg="Password Updated Successfully")
+                else :
+                    return render_template("profile.html", user=db.get_user(connection,session['email']), error_msg="Password Does Not Meet Requirements")
             else:
-                flash("Passwords Don't match")
-                redirect(url_for("info"))
+                return render_template("profile.html", user=db.get_user(connection,session['email']), error_msg="Passwords Do Not Match")
         else:
-            flash("Wrong Password")
-            redirect(url_for("info"))
-            
+            return render_template("profile.html", user=db.get_user(connection,session['email']), error_msg="Old Password Is Incorrect")
     return redirect(url_for('login'))
 
 
