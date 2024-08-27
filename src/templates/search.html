@@ -70,7 +70,7 @@
                     <div class="header__right">
                         {% if user: %}
                         <a href="#"><i class="fa fa-shopping-cart"></i></a>
-                        <a href="#"><i class="fa fa-money"></i> {{ user['balance'] |
+                        <a href="{{ url_for('add_money') }}"><i class="fa fa-money"></i> {{ user['balance'] |
                             round(2)}}</a>
                         {% endif %}
                         <a href="#" class="search-switch"><span class="icon_search"></span></a>
