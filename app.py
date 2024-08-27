@@ -111,11 +111,11 @@ def login():
             return render_template('login.html',error_msg="Invalid Email")
 
         user = db.get_user(connection, email)
-
-        if user["email"] == "admin@gmail.com" and utils.is_password_match(password ,user["password"]) :
-            session['username'] = user["username"]
-            session['email'] = user["email"]
-            return redirect(url_for('admin_add_game'))
+        if user: 
+            if user["email"] == "admin@gmail.com" and utils.is_password_match(password ,user["password"]) :
+                session['username'] = user["username"]
+                session['email'] = user["email"]
+                return redirect(url_for('admin_add_game'))
 
         if user:
             if utils.is_password_match(password, user['password']):
@@ -127,7 +127,7 @@ def login():
                 return render_template('login.html',error_msg="Invalid Password or Email")
 
         else:
-            return render_template('login.html',error_msg="Email Doesn't Exist")
+            return render_template('login.html',error_msg="Invalid Password or Email")
 
     return render_template('login.html',error_msg="")
 
