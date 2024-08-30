@@ -372,6 +372,7 @@ def update_pfp():
             return render_template("profile.html", user=db.get_user(connection,session['email']), error_msg="File Type Not Allowed")
         if image:
             db.update_pfp(connection, session['email'], image.filename)
+            db.comments_update_pfp(connection, db.get_user(connection,session['email'])['username'], image.filename)
             image.save(os.path.join('src/static/img/user', image.filename)) #works
             return render_template("profile.html", user=db.get_user(connection,session['email']), error_msg="Profile Picture Updated Successfully")
     return redirect(url_for('login'))

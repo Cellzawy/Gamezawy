@@ -347,3 +347,15 @@ def get_comments(connection,game_id):
         , (game_id,)
     )
     return cursor.fetchall()
+
+def comments_update_pfp(connection, username, new_pfp):
+    cursor = connection.cursor()
+    cursor.execute(
+        '''
+            UPDATE comments
+            SET user_img = ?
+            WHERE username = ?
+        '''
+        , (new_pfp,username)
+    )
+    return connection.commit()
