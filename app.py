@@ -220,17 +220,18 @@ def buy(id):
 @app.route('/game/<id>', methods=['GET', 'POST'])
 def game_page(id):
     game = db.get_game(connection,id)
+    comments = db.get_comments(connection,id)
     if "email" in session :
         if session['email'] == "admin@gmail.com":
             return redirect(url_for('admin_add_game'))
         if game :
             user = db.get_user(connection, session['email'])
-            return render_template('game_page.html',game=game,user=user, in_library=db.is_game_in_library(connection, game['id'], user['id']), in_cart=db.is_game_in_cart(connection, game['id'], user['id']))
+            return render_template('game_page.html',game=game,user=user, in_library=db.is_game_in_library(connection, game['id'], user['id']), in_cart=db.is_game_in_cart(connection, game['id'], user['id']),comments=comments)
         else :
             return "GAME NOT FOUND!", 404
     else :
         if game :
-            return render_template('game_page.html', game=game, user=None, in_library=db.is_game_in_library(connection), in_cart=db.is_game_in_cart(connection))
+            return render_template('game_page.html', game=game, user=None, in_library=db.is_game_in_library(connection), in_cart=db.is_game_in_cart(connection),comments=comments)
         else :
             return "GAME NOT FOUND!", 404
 
@@ -393,6 +394,17 @@ def update_password():
         else:
             return render_template("profile.html", user=db.get_user(connection,session['email']), error_msg="Old Password Is Incorrect")
     return redirect(url_for('login'))
+
+@app.route('/add_comment/<id>',  methods=['GET', 'POST'])
+def add_comment(id):
+    if request.method == 'POST':
+        if 'email' not in session:
+            return redirect(url_for('login'))
+        comment_body = escape(request.form['comment_body'])
+        user = db.get_user(connection, session['email'])
+        db.add_comment(connection,user['img_path'] ,user['username'],id, comment_body)
+
+    return redirect(url_for('game_page', id=id))
 
 
 if __name__ == '__main__':

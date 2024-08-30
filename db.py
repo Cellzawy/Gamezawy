@@ -72,6 +72,18 @@ def init_db(connection):
             FOREIGN KEY (game_id) REFERENCES games(id) ON DELETE CASCADE 
         )
     ''')
+    
+    cursor.execute('''
+       CREATE TABLE IF NOT EXISTS comments (
+            user_img TEXT NOT NULL,
+            username TEXT NOT NULL,
+            comment_body TEXT NOT NULL,
+            game_id INTEGER NOT NULL,
+            date DATE DEFAULT CURRENT_DATE,
+            FOREIGN KEY (username) REFERENCES users(username) ON DELETE CASCADE, 
+            FOREIGN KEY (game_id) REFERENCES games(id) ON DELETE CASCADE 
+        )
+    ''')
 
     connection.commit()
 
@@ -314,4 +326,24 @@ def edit_game(connection,name,price,description,genres,release_date,img_path,dev
         '''
         , (name,price,description,genres,release_date,img_path,developers,id)
     )
-    connection.commit()
+    return connection.commit()
+
+def add_comment(connection,user_img,username,game_id,comment_body):
+    cursor = connection.cursor()
+    cursor.execute(
+        '''
+           INSERT INTO comments (user_img,username,comment_body,game_id) VALUES (?,?,?,?)
+        '''
+        , (user_img,username,comment_body,game_id)
+    )
+    return connection.commit()
+
+def get_comments(connection,game_id):
+    cursor = connection.cursor()
+    cursor.execute(
+        '''
+           SELECT * FROM comments where game_id = ?
+        '''
+        , (game_id,)
+    )
+    return cursor.fetchall()
