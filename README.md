@@ -17,21 +17,24 @@ Gamezawy is a game store website built using Flask and SQLite as part of our sum
 ## Installation
 
 1. Clone the repository:
-   ```bash
-   git clone https://github.com/yourusername/Gamezawy.git
-   ```
+      ```bash
+      git clone https://github.com/yourusername/Gamezawy.git
+      ```
 2. Navigate to the project directory:
-   ```bash
-   cd Gamezawy
-   ```
+      ```bash
+      cd Gamezawy
+      ```
 3. Create and activate a virtual environment:
-  ```bash
-  python3 -m venv venv
-  source venv/bin/activate  # On Windows use `venv\Scripts\activate`
-  ```
+     ```bash
+     python3 -m venv venv
+     source venv/bin/activate  # On Windows use `venv\Scripts\activate`
+     ```
 4. Install the required dependencies:
-  ```bash
-  pip install -r requirements.txt
-
-  ```
+     ```bash
+     pip install -r requirements.txt
+     ```
+5. Run the application:
+   ```bash
+   flask --app app.py run
+   ```
 
